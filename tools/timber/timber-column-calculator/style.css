@@ -1,0 +1,9 @@
+.et-tool--timber-column .et-tool__title {
+  max-width: 14ch;
+}
+
+.et-tool--timber-column .et-tool__status strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}

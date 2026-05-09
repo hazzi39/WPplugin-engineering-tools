@@ -1,0 +1,19 @@
+{
+  "slug": "rc-column-designer",
+  "shortcode": "rc_column_designer",
+  "title": "RC Column Designer",
+  "category": "concrete",
+  "description": "Interaction-based reinforced concrete column design with rectangular and circular section support.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage"
+  ]
+}

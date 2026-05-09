@@ -1,0 +1,17 @@
+{
+  "slug": "timber-column-calculator",
+  "shortcode": "f14_timber_column_calculator",
+  "title": "Timber Column Calculator",
+  "category": "timber",
+  "description": "Native WordPress timber column calculator for quick section geometry checks.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "local-storage",
+    "saved-results",
+    "responsive-ui"
+  ]
+}
