@@ -1,6 +1,7 @@
 const STORAGE_KEY = "rc-column-design-snapshots-v1";
 const EPSILON_CU = 0.003;
 const root = document.querySelector('.et-tool[data-tool-slug="rc-column-designer"]');
+const HTML2PDF_CDN = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
 
 const GLOBAL_RULES = {
   fc: { label: "f'c", min: 15, max: 100 },
@@ -55,6 +56,7 @@ const CIRCLE_RULES = {
 const elements = {
   form: root?.querySelector("#calculator-form"),
   saveButton: root?.querySelector("#save-result"),
+  exportPdfButton: root?.querySelector("#export-pdf"),
   sectionType: root?.querySelector("#sectionType"),
   frameType: root?.querySelector("#frameType"),
   unbracedMethod: root?.querySelector("#unbracedMethod"),
@@ -69,6 +71,7 @@ const elements = {
   svg: root?.querySelector("#diagram-svg"),
   visualCaption: root?.querySelector("#visual-caption"),
   tableBody: root?.querySelector("#saved-results-body"),
+  pdfReport: root?.querySelector("#pdf-report"),
   equations: {
     primary: root?.querySelector("#equation-primary"),
     secondary: root?.querySelector("#equation-secondary"),
@@ -112,6 +115,7 @@ const state = {
   lastResult: null,
   savedResults: loadSavedResults(),
   animatedValues: new Map(),
+  currentEquations: null,
 };
 
 let hasInitialised = false;
@@ -180,6 +184,7 @@ function bindEvents() {
   });
 
   elements.saveButton.addEventListener("click", saveCurrentResult);
+  elements.exportPdfButton.addEventListener("click", generatePDF);
 }
 
 function syncSectionInputs() {
@@ -208,28 +213,33 @@ function populateRestraintCases() {
   elements.kFactorDisplay.value = selected ? selected.k.toFixed(2) : "--";
 }
 
-function renderEquations(sectionType) {
+function getEquationSet(sectionType) {
   const frameType = elements.frameType?.value || "braced";
   const unbracedMethod = elements.unbracedMethod?.value || "storey";
-  const equations = sectionType === "rectangular"
+  return sectionType === "rectangular"
     ? {
-        primary: String.raw`N_u=C_c+\sum F_{si},\quad M_u=\left|C_c\left(\frac{D}{2}-\frac{a}{2}\right)+\sum F_{si}\left(\frac{D}{2}-y_i\right)\right|`,
-        secondary: String.raw`a=\gamma d_n,\quad C_c=\alpha_2 f'_cba,\quad \varepsilon_{si}=\varepsilon_{cu}\frac{d_n-y_i}{d_n},\quad f_{si}=\max\left(-f_{sy},\min(E_s\varepsilon_{si},f_{sy})\right)`,
-        slenderness: frameType === "braced"
-          ? String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right),\quad N_c=\left(\frac{\pi^2}{L_e^2}\right)\left[\frac{182d_0(\phi M_c)}{1+\beta_d}\right]`
-          : unbracedMethod === "storey"
-            ? String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{\sum N^*}{\sum N_c}},\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right)`
-            : String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{1+\beta_d}{\alpha_s\lambda_{uc}}},\quad \alpha_s=0.6`,
-      }
+      primary: String.raw`N_u=C_c+\sum F_{si},\quad M_u=\left|C_c\left(\frac{D}{2}-\frac{a}{2}\right)+\sum F_{si}\left(\frac{D}{2}-y_i\right)\right|`,
+      secondary: String.raw`a=\gamma d_n,\quad C_c=\alpha_2 f'_cba,\quad \varepsilon_{si}=\varepsilon_{cu}\frac{d_n-y_i}{d_n},\quad f_{si}=\max\left(-f_{sy},\min(E_s\varepsilon_{si},f_{sy})\right)`,
+      slenderness: frameType === "braced"
+        ? String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right),\quad N_c=\left(\frac{\pi^2}{L_e^2}\right)\left[\frac{182d_0(\phi M_c)}{1+\beta_d}\right]`
+        : unbracedMethod === "storey"
+          ? String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{\sum N^*}{\sum N_c}},\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right)`
+          : String.raw`r=0.3D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{1+\beta_d}{\alpha_s\lambda_{uc}}},\quad \alpha_s=0.6`,
+    }
     : {
-        primary: String.raw`N_u=C_c+\sum F_{si},\quad M_u=\left|C_c(r-d_c)+\sum F_{si}(r-d_{si})\right|`,
-        secondary: String.raw`b_o=2\sqrt{2ar-a^2},\quad \alpha=4\tan^{-1}\left(\frac{2a}{b_o}\right),\quad A'_c=\frac{1}{2}r^2(\alpha-\sin\alpha),\quad C_c=0.85f'_cA'_c`,
-        slenderness: frameType === "braced"
-          ? String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right),\quad N_c=\left(\frac{\pi^2}{L_e^2}\right)\left[\frac{182d_0(\phi M_c)}{1+\beta_d}\right]`
-          : unbracedMethod === "storey"
-            ? String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{\sum N^*}{\sum N_c}},\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right)`
-            : String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{1+\beta_d}{\alpha_s\lambda_{uc}}},\quad \alpha_s=0.6`,
-      };
+      primary: String.raw`N_u=C_c+\sum F_{si},\quad M_u=\left|C_c(r-d_c)+\sum F_{si}(r-d_{si})\right|`,
+      secondary: String.raw`b_o=2\sqrt{2ar-a^2},\quad \alpha=4\tan^{-1}\left(\frac{2a}{b_o}\right),\quad A'_c=\frac{1}{2}r^2(\alpha-\sin\alpha),\quad C_c=0.85f'_cA'_c`,
+      slenderness: frameType === "braced"
+        ? String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right),\quad N_c=\left(\frac{\pi^2}{L_e^2}\right)\left[\frac{182d_0(\phi M_c)}{1+\beta_d}\right]`
+        : unbracedMethod === "storey"
+          ? String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{\sum N^*}{\sum N_c}},\quad \delta_b=\max\left(1,\frac{k_m}{1-\frac{N^*}{N_c}}\right)`
+          : String.raw`r=0.25D,\quad L_e=kL_u,\quad \delta=\max(\delta_b,\delta_s),\quad \delta_s=\frac{1}{1-\frac{1+\beta_d}{\alpha_s\lambda_{uc}}},\quad \alpha_s=0.6`,
+    };
+}
+
+function renderEquations(sectionType) {
+  const equations = getEquationSet(sectionType);
+  state.currentEquations = equations;
 
   Object.entries(equations).forEach(([key, expression]) => {
     const target = elements.equations[key];
@@ -248,6 +258,7 @@ function handleInputChange() {
   if (!validation.isValid) {
     state.lastResult = null;
     elements.saveButton.disabled = true;
+    elements.exportPdfButton.disabled = true;
     setInvalidOutputs();
     drawEmptyState("Resolve the highlighted inputs to generate the interaction check.");
     return;
@@ -256,6 +267,7 @@ function handleInputChange() {
   const result = runCalculation(validation.values);
   state.lastResult = result;
   elements.saveButton.disabled = false;
+  elements.exportPdfButton.disabled = false;
   renderEquations(validation.values.sectionType);
   updateOutputs(result);
   drawDiagram(result);
@@ -1041,6 +1053,426 @@ function drawInteractionDiagram(result) {
       <text x="${x + width - 28}" y="${y + 34}" text-anchor="end" fill="#11211d" font-size="16" font-weight="700">η = ${result.utilisation.toFixed(2)}</text>
     </g>
   `;
+}
+
+async function generatePDF() {
+  if (!state.lastResult || !elements.pdfReport) {
+    if (elements.resultStatus) {
+      elements.resultStatus.textContent = "Run a valid calculation before exporting the PDF report.";
+    }
+    return;
+  }
+
+  const button = elements.exportPdfButton;
+  const originalLabel = button.textContent;
+
+  // Prevent duplicate exports and give the user a clear loading state.
+  button.disabled = true;
+  button.textContent = "Generating PDF...";
+  if (elements.resultStatus) {
+    elements.resultStatus.textContent = "Generating PDF report...";
+  }
+
+  try {
+    await ensurePdfLibrary();
+
+    // Build a dedicated report container instead of capturing the visible UI.
+    buildCalculationReport(state.lastResult);
+
+    const filename = `rc-column-designer_${formatFileTimestamp(new Date())}.pdf`;
+    const reportNode = elements.pdfReport;
+    reportNode.classList.add("is-active");
+
+    // Wait one frame so the hidden report template fully renders before export.
+    await waitForNextFrame();
+
+    const worker = window.html2pdf().set({
+      margin: [12, 12, 16, 12],
+      filename,
+      pagebreak: {
+        mode: ["css", "legacy"],
+        avoid: [".pdf-report__section", ".pdf-report__table", ".pdf-report__equation-card", ".pdf-report__diagram-card"],
+      },
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+    }).from(reportNode);
+
+    await worker.toPdf().get("pdf").then((pdf) => {
+      // Stamp page numbers into the final document for archive-ready output.
+      const pageCount = pdf.internal.getNumberOfPages();
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      for (let page = 1; page <= pageCount; page += 1) {
+        pdf.setPage(page);
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(9);
+        pdf.setTextColor(102, 122, 116);
+        pdf.text(`Page ${page} of ${pageCount}`, pageWidth - 12, pageHeight - 8, { align: "right" });
+      }
+    });
+
+    await worker.save();
+    if (elements.resultStatus) {
+      elements.resultStatus.textContent = "PDF report generated successfully.";
+    }
+  } catch (error) {
+    console.error("RC Column PDF export failed:", error);
+    if (elements.resultStatus) {
+      elements.resultStatus.textContent = "PDF generation failed. Please refresh and try again. If it persists, the browser or WordPress page is blocking the export library.";
+    }
+    if (typeof window.alert === "function") {
+      window.alert("PDF generation failed. Please refresh the page and try again.");
+    }
+  } finally {
+    elements.pdfReport.classList.remove("is-active");
+    button.disabled = false;
+    button.textContent = originalLabel;
+  }
+}
+
+function waitForNextFrame() {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => resolve());
+  });
+}
+
+async function ensurePdfLibrary() {
+  if (typeof window.html2pdf === "function") {
+    return;
+  }
+
+  await loadExternalScript(HTML2PDF_CDN, "engineering-tools-html2pdf-runtime");
+
+  if (typeof window.html2pdf !== "function") {
+    throw new Error("html2pdf failed to load.");
+  }
+}
+
+function loadExternalScript(src, id) {
+  return new Promise((resolve, reject) => {
+    const existing = document.getElementById(id);
+    if (existing) {
+      if (existing.dataset.loaded === "true") {
+        resolve();
+        return;
+      }
+
+      existing.addEventListener("load", () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = id;
+    script.src = src;
+    script.async = true;
+    script.onload = () => {
+      script.dataset.loaded = "true";
+      resolve();
+    };
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+function buildCalculationReport(result) {
+  const generatedAt = new Date();
+  const project = root.dataset.reportProject || "Not specified";
+  const company = root.dataset.reportCompany || "Not specified";
+  const preparedBy = root.dataset.reportPreparedBy || "Not specified";
+  const disclaimer = root.dataset.reportDisclaimer || "";
+  const inputRows = getInputParameterRows(result.input);
+  const intermediateRows = getIntermediateRows(result);
+  const finalRows = getFinalResultRows(result);
+  const methodologyItems = getMethodologyItems(result);
+  const equations = state.currentEquations || getEquationSet(result.input.sectionType);
+
+  // Build a dedicated printable HTML sheet that can be reused across tools.
+  elements.pdfReport.innerHTML = `
+    <div class="pdf-report__page">
+      <header class="pdf-report__header pdf-report__section">
+        <div>
+          <p class="pdf-report__eyebrow">Structural Engineering Calculation Sheet</p>
+          <h1 class="pdf-report__title">Interaction-Based Column Designer</h1>
+          <p class="pdf-report__subtitle">Reinforced concrete column capacity verification and slenderness magnification report</p>
+        </div>
+        <div class="pdf-report__meta">
+          <div><strong>Company</strong><span>${escapeXml(company)}</span></div>
+          <div><strong>Project</strong><span>${escapeXml(project)}</span></div>
+          <div><strong>Prepared By</strong><span>${escapeXml(preparedBy)}</span></div>
+          <div><strong>Generated</strong><span>${escapeXml(formatReportDate(generatedAt))}</span></div>
+        </div>
+      </header>
+
+      <section class="pdf-report__section">
+        <div class="pdf-report__section-head">
+          <h2>Design Summary</h2>
+          <span class="pdf-report__badge pdf-report__badge--${getStatusClass(result.status)}">${escapeXml(result.status.toUpperCase())}</span>
+        </div>
+        <div class="pdf-report__summary-grid">
+          ${createSummaryCard("Utilisation", `${formatPdfValue(result.utilisation, 2)} η`, "Demand / capacity ratio")}
+          ${createSummaryCard("Amplified Moment", `${formatPdfValue(result.amplifiedMoment, 1)} kNm`, "Second-order design moment")}
+          ${createSummaryCard("Capacity on Demand Line", `${formatPdfValue(result.demandOnPhiCurve?.MuPhi, 1)} kNm`, "Phi-reduced capacity")}
+          ${createSummaryCard("Slenderness Check", result.classification, "General Le / r review")}
+        </div>
+      </section>
+
+      <section class="pdf-report__section pdf-report__avoid-break">
+        <div class="pdf-report__section-head">
+          <h2>Input Parameters</h2>
+        </div>
+        ${createResultsTable(["Parameter", "Value", "Units"], inputRows)}
+      </section>
+
+      <section class="pdf-report__section pdf-report__diagram-card pdf-report__avoid-break">
+        <div class="pdf-report__section-head">
+          <h2>Section Visualisation</h2>
+        </div>
+        <div class="pdf-report__diagram-wrap">
+          ${serializeDiagramMarkup()}
+        </div>
+      </section>
+
+      <section class="pdf-report__section">
+        <div class="pdf-report__section-head">
+          <h2>Calculation Methodology</h2>
+        </div>
+        <ul class="pdf-report__list">
+          ${methodologyItems.map((item) => `<li>${escapeXml(item)}</li>`).join("")}
+        </ul>
+      </section>
+
+      <section class="pdf-report__section">
+        <div class="pdf-report__section-head">
+          <h2>Method Equations</h2>
+        </div>
+        <div class="pdf-report__equation-grid">
+          ${formatEquation("Interaction Method", equations.primary)}
+          ${formatEquation("Section Strength", equations.secondary)}
+          ${formatEquation("Slenderness Check", equations.slenderness)}
+        </div>
+      </section>
+
+      <section class="pdf-report__section">
+        <div class="pdf-report__section-head">
+          <h2>Intermediate Calculations</h2>
+        </div>
+        ${createResultsTable(["Calculation", "Value", "Units"], intermediateRows)}
+      </section>
+
+      <section class="pdf-report__section">
+        <div class="pdf-report__section-head">
+          <h2>Final Results</h2>
+        </div>
+        ${createResultsTable(["Result", "Value", "Units"], finalRows)}
+      </section>
+
+      ${disclaimer ? `
+        <section class="pdf-report__section pdf-report__section--disclaimer">
+          <div class="pdf-report__section-head">
+            <h2>Disclaimer</h2>
+          </div>
+          <p class="pdf-report__disclaimer">${escapeXml(disclaimer)}</p>
+        </section>
+      ` : ""}
+    </div>
+  `;
+
+  renderReportEquations(elements.pdfReport);
+}
+
+function getInputParameterRows(input) {
+  const rows = [
+    ["Section Shape", formatTitle(input.sectionType), ""],
+    ["Concrete Strength, f'c", formatPdfValue(input.fc, 0), "MPa"],
+    ["Steel Yield Strength, fsy", formatPdfValue(input.fsy, 0), "MPa"],
+    ["Steel Modulus, Es", formatPdfValue(input.Es, 0), "MPa"],
+    ["Strength Factor, φ", formatPdfValue(input.phi, 2), "factor"],
+    ["Clear Cover", formatPdfValue(input.cover, 0), "mm"],
+    ["Design Axial Force, N*", formatPdfValue(input.Nstar, 0), "kN"],
+    ["Design Moment, M*", formatPdfValue(input.Mstar, 1), "kNm"],
+    ["Frame Type", formatTitle(input.frameType), ""],
+    ["Clear Height, Lu", formatPdfValue(input.Lu, 0), "mm"],
+    ["Effective Length Factor, k", formatPdfValue(input.kFactor, 2), "factor"],
+    ["Moment Factor, km", formatPdfValue(input.km, 2), "factor"],
+    ["Permanent Axial Force, NG*", formatPdfValue(input.NGstar, 0), "kN"],
+    ["General Slenderness Limit", formatPdfValue(input.maxSlenderness, 0), "ratio"],
+    ["Tie / Spiral Bar Diameter", formatPdfValue(input.tieBarDia, 0), "mm"],
+  ];
+
+  if (input.frameType === "unbraced") {
+    rows.push(["δs Method", input.unbracedMethod === "elastic" ? "Elastic Buckling Alternative" : "Storey Summation", ""]);
+    if (input.unbracedMethod === "elastic") {
+      rows.push(["Frame Buckling Ratio, λuc", formatPdfValue(input.lambdaUc, 2), "ratio"]);
+    } else {
+      rows.push(["Storey Sum, ΣN*", formatPdfValue(input.sumNstar, 0), "kN"]);
+      rows.push(["Storey Sum, ΣNc", formatPdfValue(input.sumNc, 0), "kN"]);
+    }
+  }
+
+  if (input.sectionType === "rectangular") {
+    rows.push(
+      ["Width, b", formatPdfValue(input.rect_b, 0), "mm"],
+      ["Depth, D", formatPdfValue(input.rect_D, 0), "mm"],
+      ["Main Bar Diameter", formatPdfValue(input.rect_barDia, 0), "mm"],
+      ["Top Bars", formatPdfValue(input.rect_topBars, 0), "count"],
+      ["Bottom Bars", formatPdfValue(input.rect_bottomBars, 0), "count"],
+      ["Side Bars per Face", formatPdfValue(input.rect_sideBars, 0), "count"]
+    );
+  } else {
+    rows.push(
+      ["Diameter, D", formatPdfValue(input.circle_D, 0), "mm"],
+      ["Main Bar Diameter", formatPdfValue(input.circle_barDia, 0), "mm"],
+      ["Number of Bars", formatPdfValue(input.circle_barCount, 0), "count"]
+    );
+  }
+
+  return rows;
+}
+
+function getIntermediateRows(result) {
+  return [
+    ["α2", formatPdfValue(result.alpha2, 3), "factor"],
+    ["γ", formatPdfValue(result.gamma, 3), "factor"],
+    ["Gross Area", formatPdfValue(result.section.area, 0), "mm²"],
+    ["Steel Area", formatPdfValue(result.section.totalSteelArea, 0), "mm²"],
+    ["Effective Length, Le", formatPdfValue(result.Le, 0), "mm"],
+    ["Radius of Gyration, r", formatPdfValue(result.rg, 1), "mm"],
+    ["Slenderness Ratio, Le/r", formatPdfValue(result.slendernessRatio, 2), "ratio"],
+    ["Critical Buckling Load, Nc", formatPdfValue(result.Nc, 1), "kN"],
+    ["βd", formatPdfValue(result.betaD, 3), "factor"],
+    ["δb", formatPdfValue(result.deltaB, 3), "factor"],
+    ["δs", formatPdfValue(result.deltaS, 3), "factor"],
+    ["Governing Magnifier, δ", formatPdfValue(result.delta, 3), "factor"],
+    ["Demand Eccentricity", formatPdfValue(result.demandEccentricity, 1), "mm"],
+    ["Neutral Axis at Demand", formatPdfValue(result.demandOnPhiCurve?.dn, 1), "mm"],
+    ["Compression Block Depth, a", formatPdfValue(result.demandOnPhiCurve?.aDepth, 1), "mm"],
+    ["Interaction Curve Samples", formatPdfValue(result.curve.length, 0), "count"],
+  ];
+}
+
+function getFinalResultRows(result) {
+  return [
+    ["Status", result.status, result.status === "Safe" ? "PASS" : "FAIL"],
+    ["Utilisation, η", formatPdfValue(result.utilisation, 2), "ratio"],
+    ["Amplified Moment, M*a", formatPdfValue(result.amplifiedMoment, 1), "kNm"],
+    ["Capacity on Demand Line", formatPdfValue(result.demandOnPhiCurve?.MuPhi, 1), "kNm"],
+    ["Capacity Axial Force", formatPdfValue(result.demandOnPhiCurve?.NuPhi, 1), "kN"],
+    ["Pure Compression", formatPdfValue(result.pureCompression?.NuPhi, 1), "kN"],
+    ["Pure Bending", formatPdfValue(result.pureBending?.MuPhi, 1), "kNm"],
+    ["Balanced Moment", formatPdfValue(result.balanced?.MuPhi, 1), "kNm"],
+    ["Balanced Axial", formatPdfValue(result.balanced?.NuPhi, 1), "kN"],
+    ["Tie / Helix Limit", formatPdfValue(result.tieSpacingLimit, 1), "mm"],
+    ["General Slenderness Check", result.classification, result.exceedsGeneralLimit ? "FAIL" : "PASS"],
+  ];
+}
+
+function getMethodologyItems(result) {
+  const shapeText = result.section.shape === "rectangular"
+    ? "Rectangular section analysis uses a rectangular stress block and discrete longitudinal bar forces."
+    : "Circular section analysis uses a compression segment derived from the circular stress-block geometry.";
+
+  const frameText = result.input.frameType === "braced"
+    ? "Braced-column magnification follows the governing δb expression using the critical buckling load."
+    : "Unbraced-column magnification checks both δb and δs, then applies the larger value to the design moment.";
+
+  return [
+    shapeText,
+    frameText,
+    "Interaction capacities are generated across multiple neutral-axis positions and reduced by the selected strength factor.",
+    "Demand capacity is resolved by intersecting the amplified action line with the phi-reduced interaction curve.",
+    "PASS / FAIL outcomes combine utilisation checks with slenderness and stability review conditions.",
+  ];
+}
+
+function createSummaryCard(label, value, note) {
+  return `
+    <article class="pdf-report__summary-card">
+      <span class="pdf-report__summary-label">${escapeXml(label)}</span>
+      <strong class="pdf-report__summary-value">${escapeXml(value)}</strong>
+      <span class="pdf-report__summary-note">${escapeXml(note)}</span>
+    </article>
+  `;
+}
+
+function createResultsTable(headers, rows) {
+  return `
+    <table class="pdf-report__table">
+      <thead>
+        <tr>${headers.map((header) => `<th>${escapeXml(header)}</th>`).join("")}</tr>
+      </thead>
+      <tbody>
+        ${rows.map((row) => `
+          <tr>
+            ${row.map((cell, index) => `<td${index === 0 ? ' class="pdf-report__cell-label"' : ""}>${escapeXml(String(cell))}</td>`).join("")}
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  `;
+}
+
+function formatEquation(title, expression) {
+  const id = `pdf-eq-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return `
+    <article class="pdf-report__equation-card">
+      <h3>${escapeXml(title)}</h3>
+      <div id="${id}" class="pdf-report__equation" data-expression="${escapeXml(expression)}"></div>
+    </article>
+  `;
+}
+
+function renderReportEquations(container) {
+  // Render KaTeX into the dedicated report template before PDF conversion.
+  container.querySelectorAll(".pdf-report__equation").forEach((node) => {
+    const expression = node.dataset.expression || "";
+    if (window.katex) {
+      window.katex.render(expression, node, { throwOnError: false, displayMode: true });
+    } else {
+      node.textContent = expression;
+    }
+  });
+}
+
+function serializeDiagramMarkup() {
+  // Clone the live SVG so the PDF report includes the current engineering diagram state.
+  const svgMarkup = elements.svg ? elements.svg.outerHTML : "";
+  return svgMarkup ? `<div class="pdf-report__svg-frame">${svgMarkup}</div>` : "<p>No diagram available.</p>";
+}
+
+function formatReportDate(date) {
+  return date.toLocaleString("en-AU", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatFileTimestamp(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}_${hours}${minutes}`;
+}
+
+function formatPdfValue(value, decimals) {
+  return Number.isFinite(value) ? value.toFixed(decimals) : "N/A";
+}
+
+function getStatusClass(status) {
+  if (status === "Safe") {
+    return "pass";
+  }
+  if (status === "Review") {
+    return "review";
+  }
+  return "fail";
 }
 
 function saveCurrentResult() {

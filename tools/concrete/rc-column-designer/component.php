@@ -12,12 +12,26 @@ if (! defined('ABSPATH')) {
 }
 
 $instanceId = (string) $context['instance_id'];
+$reportSettings = shortcode_atts(
+    array(
+        'company' => '',
+        'project' => '',
+        'prepared_by' => '',
+        'disclaimer' => 'This calculation sheet is generated from the current tool state and should be reviewed by a qualified engineer before issue.',
+    ),
+    is_array($context['atts']) ? $context['atts'] : array(),
+    (string) ($context['tag'] ?? 'rc_column_designer')
+);
 ?>
 <section
   id="<?php echo esc_attr($instanceId); ?>"
   class="et-tool et-tool--rc-column"
   data-tool-slug="rc-column-designer"
   data-instance-id="<?php echo esc_attr($instanceId); ?>"
+  data-report-company="<?php echo esc_attr((string) $reportSettings['company']); ?>"
+  data-report-project="<?php echo esc_attr((string) $reportSettings['project']); ?>"
+  data-report-prepared-by="<?php echo esc_attr((string) $reportSettings['prepared_by']); ?>"
+  data-report-disclaimer="<?php echo esc_attr((string) $reportSettings['disclaimer']); ?>"
 ><div class="app-shell">
     <header class="app-header surface-card">
       <div>
@@ -47,7 +61,10 @@ $instanceId = (string) $context['instance_id'];
               <p class="eyebrow">Result</p>
               <h2>Design Capacity Check</h2>
             </div>
-            <button id="save-result" class="primary-button" type="button">Save Result</button>
+            <div class="result-actions">
+              <button id="save-result" class="primary-button" type="button">Save Result</button>
+              <button id="export-pdf" class="secondary-button" type="button">Export PDF</button>
+            </div>
           </div>
 
           <div class="result-highlight" data-tooltip="Overall demand-to-capacity ratio based on the amplified design moment and the phi-reduced interaction curve.">
@@ -241,5 +258,6 @@ $instanceId = (string) $context['instance_id'];
       </div>
     </section>
   </div>
+  <div id="pdf-report" class="pdf-report" aria-hidden="true"></div>
 </section>
 

@@ -85,6 +85,14 @@ final class Plugin
             true
         );
 
+        wp_register_script(
+            'engineering-tools-html2pdf',
+            'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
+            array(),
+            '0.10.1',
+            true
+        );
+
         foreach ($this->registry->all() as $tool) {
             $styleUrl = $tool->styleUrl();
             if ($styleUrl) {
@@ -101,7 +109,7 @@ final class Plugin
                 wp_register_script(
                     $this->toolScriptHandle($tool),
                     $scriptUrl,
-                    array('engineering-tools-shared'),
+                    $this->toolScriptDependencies($tool),
                     $this->assetVersion((string) $tool->scriptPath()),
                     true
                 );
@@ -170,6 +178,10 @@ final class Plugin
             wp_enqueue_script('engineering-tools-katex');
         }
 
+        if ($tool->hasSupport('pdf-export')) {
+            wp_enqueue_script('engineering-tools-html2pdf');
+        }
+
         wp_enqueue_script('engineering-tools-shared');
 
         if ($tool->scriptUrl()) {
@@ -185,6 +197,24 @@ final class Plugin
     private function toolScriptHandle(Tool $tool): string
     {
         return 'engineering-tools-script-' . $tool->slug();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function toolScriptDependencies(Tool $tool): array
+    {
+        $dependencies = array('engineering-tools-shared');
+
+        if ($tool->hasSupport('equation-rendering')) {
+            $dependencies[] = 'engineering-tools-katex';
+        }
+
+        if ($tool->hasSupport('pdf-export')) {
+            $dependencies[] = 'engineering-tools-html2pdf';
+        }
+
+        return $dependencies;
     }
 
     private function assetVersion(string $path): string
