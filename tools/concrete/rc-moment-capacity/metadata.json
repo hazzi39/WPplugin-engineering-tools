@@ -1,0 +1,20 @@
+{
+  "slug": "rc-moment-capacity",
+  "shortcode": "rc_moment_capacity",
+  "title": "RC Moment Capacity Calculator",
+  "category": "concrete",
+  "description": "Premium reinforced concrete rectangular section moment capacity calculator with live section visualisation, exact equations, and saved result snapshots.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage",
+    "word-export"
+  ]
+}
