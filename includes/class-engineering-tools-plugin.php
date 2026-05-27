@@ -13,23 +13,25 @@ final class Plugin
 {
     private static ?self $instance = null;
 
+    private string $pluginFile;
     private Tool_Registry $registry;
     private Assets $assets;
     private Renderer $renderer;
     private Shortcodes $shortcodes;
 
-    private function __construct()
+    private function __construct(string $pluginFile)
     {
-        $this->registry = new Tool_Registry(ENGINEERING_TOOLS_FILE);
-        $this->assets = new Assets($this->registry);
+        $this->pluginFile = $pluginFile;
+        $this->registry = new Tool_Registry($pluginFile);
+        $this->assets = new Assets($pluginFile, $this->registry);
         $this->renderer = new Renderer($this->assets);
         $this->shortcodes = new Shortcodes($this->registry, $this->renderer);
     }
 
-    public static function instance(): self
+    public static function instance(string $pluginFile): self
     {
         if (! self::$instance instanceof self) {
-            self::$instance = new self();
+            self::$instance = new self($pluginFile);
         }
 
         return self::$instance;
@@ -50,7 +52,7 @@ final class Plugin
         load_plugin_textdomain(
             'engineering-tools',
             false,
-            dirname(plugin_basename(ENGINEERING_TOOLS_FILE)) . '/languages'
+            dirname(plugin_basename($this->pluginFile)) . '/languages'
         );
     }
 }

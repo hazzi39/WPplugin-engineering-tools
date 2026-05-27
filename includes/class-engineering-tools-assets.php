@@ -11,13 +11,15 @@ defined('ABSPATH') || exit;
 
 final class Assets
 {
+    private string $pluginFile;
     private Tool_Registry $registry;
 
     /** @var array<string, Tool> */
     private array $queuedTools = array();
 
-    public function __construct(Tool_Registry $registry)
+    public function __construct(string $pluginFile, Tool_Registry $registry)
     {
+        $this->pluginFile = $pluginFile;
         $this->registry = $registry;
     }
 
@@ -32,16 +34,16 @@ final class Assets
 
         wp_register_style(
             'engineering-tools-shared',
-            ENGINEERING_TOOLS_URL . 'assets/css/engineering-tools.css',
+            plugin_dir_url($this->pluginFile) . 'assets/css/engineering-tools.css',
             array(),
-            $this->assetVersion(ENGINEERING_TOOLS_PATH . 'assets/css/engineering-tools.css')
+            $this->assetVersion(plugin_dir_path($this->pluginFile) . 'assets/css/engineering-tools.css')
         );
 
         wp_register_script(
             'engineering-tools-shared',
-            ENGINEERING_TOOLS_URL . 'assets/js/engineering-tools.js',
+            plugin_dir_url($this->pluginFile) . 'assets/js/engineering-tools.js',
             array(),
-            $this->assetVersion(ENGINEERING_TOOLS_PATH . 'assets/js/engineering-tools.js'),
+            $this->assetVersion(plugin_dir_path($this->pluginFile) . 'assets/js/engineering-tools.js'),
             true
         );
 
@@ -158,7 +160,7 @@ final class Assets
         return $dependencies;
     }
 
-    private function assetVersion(string $path, string $fallback = ENGINEERING_TOOLS_VERSION): string
+    private function assetVersion(string $path, string $fallback = '0.2.0'): string
     {
         if (! file_exists($path)) {
             return $fallback;
