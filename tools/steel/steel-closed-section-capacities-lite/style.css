@@ -1,0 +1,598 @@
+.et-tool--steel-closed-section-capacities-lite {
+  --bg: #f5f7f6;
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --surface-muted: #f8fbfd;
+  --text: #163344;
+  --text-muted: #5f7484;
+  --border: rgba(124, 154, 173, 0.22);
+  --border-strong: rgba(88, 125, 148, 0.3);
+  --shadow-soft: 0 24px 60px rgba(25, 58, 79, 0.08);
+  --shadow-card: 0 14px 36px rgba(24, 62, 86, 0.08);
+  --accent: #1e6dff;
+  --accent-deep: #124fb8;
+  --teal: #1198a5;
+  --success: #12805c;
+  --success-soft: rgba(18, 128, 92, 0.14);
+  --danger: #d65252;
+  --danger-soft: rgba(214, 82, 82, 0.12);
+  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --transition: 180ms ease;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(30, 109, 255, 0.08), transparent 22rem),
+    radial-gradient(circle at right 20%, rgba(17, 152, 165, 0.08), transparent 20rem),
+    var(--bg);
+  padding: 8px;
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite::before,
+.et-tool--steel-closed-section-capacities-lite::after {
+  content: "";
+  position: absolute;
+  width: 26rem;
+  height: 26rem;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+.et-tool--steel-closed-section-capacities-lite::before {
+  top: -10rem;
+  left: -8rem;
+  background: radial-gradient(circle, rgba(30, 109, 255, 0.22), transparent 62%);
+}
+
+.et-tool--steel-closed-section-capacities-lite::after {
+  right: -8rem;
+  top: 14rem;
+  background: radial-gradient(circle, rgba(17, 152, 165, 0.18), transparent 58%);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__shell {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__layout,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__left-column,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__right-column {
+  display: grid;
+  gap: 20px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__layout {
+  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1.1fr);
+  align-items: start;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__card {
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.84));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-strong);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__header-card {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__header-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__header-inner,
+.et-tool--steel-closed-section-capacities-lite .et-tool__card-inner {
+  padding: 0;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__title,
+.et-tool--steel-closed-section-capacities-lite .et-tool__section-title {
+  margin: 0;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__title {
+  font-size: clamp(2rem, 5vw, 3.65rem);
+  line-height: 1.02;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__section-title {
+  font-size: 1.25rem;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__helper,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__visual-note,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero-note,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-row span,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__export-feedback,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-summary,
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric-note,
+.et-tool--steel-closed-section-capacities-lite .et-tool__error,
+.et-tool--steel-closed-section-capacities-lite table td {
+  color: var(--text-muted);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__heading-row,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__saved-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__diagram-tag,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__diagram-tag {
+  background: rgba(17, 152, 165, 0.1);
+  color: var(--teal);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__status-pill {
+  border: 1px solid transparent;
+  background: rgba(245, 249, 255, 0.96);
+  color: var(--accent-deep);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__status-pill[data-tone="pass"] {
+  color: var(--success);
+  background: var(--success-soft);
+  border-color: rgba(18, 128, 92, 0.18);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__status-pill[data-tone="fail"] {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: rgba(214, 82, 82, 0.18);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__visual-frame {
+  min-height: 320px;
+  padding: 12px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(243, 250, 252, 0.96), rgba(249, 252, 254, 0.78));
+  border: 1px solid rgba(129, 165, 185, 0.2);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top right, rgba(30, 109, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 255, 0.92));
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero[data-tone="pass"] {
+  border-color: rgba(18, 128, 92, 0.18);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero[data-tone="fail"] {
+  border-color: rgba(214, 82, 82, 0.18);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero-label {
+  display: inline-block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__hero-value {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(2.6rem, 9vw, 4.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__meter-shell {
+  width: 100%;
+  height: 12px;
+  margin: 18px 0;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(119, 147, 167, 0.16);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__meter-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 220ms ease;
+  background: linear-gradient(90deg, #1fce96, #1198a5);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__meter-fill[data-state="fail"] {
+  background: linear-gradient(90deg, #ff8a6a, #d65252);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric-grid,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__field-grid--top,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__field-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-top: 16px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__field-grid--top {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__field-stack {
+  gap: 14px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__field {
+  display: grid;
+  gap: 8px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__input-wrap {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 10px 0 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(118, 148, 168, 0.24);
+  background: var(--surface-strong);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__input-wrap:focus-within {
+  border-color: rgba(30, 109, 255, 0.54);
+  box-shadow: 0 0 0 5px rgba(30, 109, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__input-wrap.has-error {
+  border-color: rgba(214, 82, 82, 0.5);
+  box-shadow: 0 0 0 5px rgba(214, 82, 82, 0.08);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__unit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(30, 109, 255, 0.09);
+  color: var(--accent-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__error {
+  font-size: 0.78rem;
+  color: var(--danger);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__metadata-panel,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: -6px 0 0;
+  border: 1px solid rgba(123, 155, 176, 0.18);
+  border-radius: 999px;
+  background: rgba(244, 248, 250, 0.9);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  transition: transform var(--transition), border-color var(--transition), background-color var(--transition);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-summary:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  background: rgba(240, 247, 255, 0.94);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-summary::-webkit-details-marker {
+  display: none;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__metadata-span-full {
+  grid-column: 1 / -1;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__equation-card,
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(246, 251, 255, 0.84);
+  border: 1px solid rgba(123, 155, 176, 0.16);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric-label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__metric-value {
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__math {
+  overflow-x: auto;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__math .katex-display {
+  margin: 0;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-list {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(244, 249, 252, 0.9);
+  border: 1px solid rgba(123, 155, 176, 0.14);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-row[data-state="pass"] {
+  background: rgba(18, 128, 92, 0.07);
+  border-color: rgba(18, 128, 92, 0.16);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-row[data-state="fail"] {
+  background: rgba(214, 82, 82, 0.07);
+  border-color: rgba(214, 82, 82, 0.16);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__ratio-row em {
+  min-width: 72px;
+  font-style: normal;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: right;
+  color: var(--text);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__actions {
+  display: grid;
+  gap: 10px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background-color var(--transition), filter var(--transition);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button--primary {
+  border: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #fff;
+  box-shadow: 0 18px 30px rgba(18, 79, 184, 0.22);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 34px rgba(18, 79, 184, 0.26);
+  filter: saturate(1.04);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button--secondary {
+  border: 1px solid rgba(30, 109, 255, 0.18);
+  background: rgba(245, 249, 255, 0.96);
+  color: var(--accent-deep);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button--secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(30, 109, 255, 0.3);
+  box-shadow: 0 18px 28px rgba(18, 79, 184, 0.12);
+  background: rgba(240, 247, 255, 1);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  filter: grayscale(0.08);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__export-feedback {
+  min-height: 1.4em;
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(123, 155, 176, 0.16);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__table th,
+.et-tool--steel-closed-section-capacities-lite .et-tool__table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(123, 155, 176, 0.12);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__table th {
+  background: rgba(244, 248, 250, 0.94);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-tool__table tbody tr:nth-child(even) {
+  background: rgba(248, 251, 252, 0.78);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__empty-row {
+  text-align: center;
+  padding: 24px;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-grid {
+  stroke: rgba(45, 138, 180, 0.09);
+  stroke-width: 1;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-outline,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-void {
+  fill: rgba(17, 152, 165, 0.08);
+  stroke: var(--teal);
+  stroke-width: 2;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-axis {
+  stroke: rgba(60, 88, 110, 0.35);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 5;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-dimension,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-arrow {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-centroid {
+  fill: var(--accent);
+}
+
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-label,
+.et-tool--steel-closed-section-capacities-lite .et-scsl__svg-note {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@media (min-width: 980px) {
+  .et-tool--steel-closed-section-capacities-lite .et-scsl__shell {
+    padding: 40px 24px 56px;
+  }
+
+  .et-tool--steel-closed-section-capacities-lite .et-tool__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .et-tool--steel-closed-section-capacities-lite .et-scsl__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .et-tool--steel-closed-section-capacities-lite .et-scsl__visual-frame {
+    min-height: 280px;
+  }
+
+  .et-tool--steel-closed-section-capacities-lite .et-scsl__saved-header {
+    flex-direction: column;
+  }
+}

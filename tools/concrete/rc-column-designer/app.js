@@ -1,8 +1,6 @@
 const STORAGE_KEY = "rc-column-design-snapshots-v1";
 const EPSILON_CU = 0.003;
 const root = document.querySelector('.et-tool[data-tool-slug="rc-column-designer"]');
-const HTML2PDF_CDN = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
-
 const GLOBAL_RULES = {
   fc: { label: "f'c", min: 15, max: 100 },
   fsy: { label: "fsy", min: 250, max: 800 },
@@ -71,7 +69,6 @@ const elements = {
   svg: root?.querySelector("#diagram-svg"),
   visualCaption: root?.querySelector("#visual-caption"),
   tableBody: root?.querySelector("#saved-results-body"),
-  pdfReport: root?.querySelector("#pdf-report"),
   equations: {
     primary: root?.querySelector("#equation-primary"),
     secondary: root?.querySelector("#equation-secondary"),
@@ -184,7 +181,7 @@ function bindEvents() {
   });
 
   elements.saveButton.addEventListener("click", saveCurrentResult);
-  elements.exportPdfButton.addEventListener("click", generatePDF);
+  elements.exportPdfButton.addEventListener("click", exportWordReport);
 }
 
 function syncSectionInputs() {
@@ -1055,232 +1052,153 @@ function drawInteractionDiagram(result) {
   `;
 }
 
-async function generatePDF() {
-  if (!state.lastResult || !elements.pdfReport) {
-    if (elements.resultStatus) {
-      elements.resultStatus.textContent = "Run a valid calculation before exporting the PDF report.";
-    }
-    return;
-  }
-
+async function exportWordReport() {
   const button = elements.exportPdfButton;
   const originalLabel = button.textContent;
 
-  // Prevent duplicate exports and give the user a clear loading state.
   button.disabled = true;
-  button.textContent = "Generating PDF...";
-  if (elements.resultStatus) {
-    elements.resultStatus.textContent = "Generating PDF report...";
-  }
+  button.textContent = "Generating Word Report...";
 
   try {
-    await ensurePdfLibrary();
+    if (!window.docx) {
+      throw new Error("The Word export library is not available on this page.");
+    }
 
-    // Build a dedicated report container instead of capturing the visible UI.
-    buildCalculationReport(state.lastResult);
+    const data = state.lastResult
+      ? buildCalculationReportData(state.lastResult)
+      : buildFallbackCalculationReportData();
 
-    const filename = `rc-column-designer_${formatFileTimestamp(new Date())}.pdf`;
-    const reportNode = elements.pdfReport;
-    reportNode.classList.add("is-active");
+    if (!data || !data.metadata) {
+      throw new Error("Could not build report data.");
+    }
 
-    // Wait one frame so the hidden report template fully renders before export.
-    await waitForNextFrame();
+    console.log("Word report data:", data);
 
-    const worker = window.html2pdf().set({
-      margin: [12, 12, 16, 12],
-      filename,
-      pagebreak: {
-        mode: ["css", "legacy"],
-        avoid: [".pdf-report__section", ".pdf-report__table", ".pdf-report__equation-card", ".pdf-report__diagram-card"],
-      },
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    }).from(reportNode);
+    const reportDocument = await buildWordReportDocument(data);
+    const blob = await window.docx.Packer.toBlob(reportDocument);
+    const filename = `${data.metadata.toolSlug || "engineering-report"}_${formatFileTimestamp(new Date())}.docx`;
 
-    await worker.toPdf().get("pdf").then((pdf) => {
-      // Stamp page numbers into the final document for archive-ready output.
-      const pageCount = pdf.internal.getNumberOfPages();
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
+    downloadBlob(filename, blob);
 
-      for (let page = 1; page <= pageCount; page += 1) {
-        pdf.setPage(page);
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(9);
-        pdf.setTextColor(102, 122, 116);
-        pdf.text(`Page ${page} of ${pageCount}`, pageWidth - 12, pageHeight - 8, { align: "right" });
-      }
-    });
-
-    await worker.save();
     if (elements.resultStatus) {
-      elements.resultStatus.textContent = "PDF report generated successfully.";
+      elements.resultStatus.textContent = "Word report downloaded successfully.";
     }
   } catch (error) {
-    console.error("RC Column PDF export failed:", error);
+    console.error("RC Column Word report export failed:", error);
     if (elements.resultStatus) {
-      elements.resultStatus.textContent = "PDF generation failed. Please refresh and try again. If it persists, the browser or WordPress page is blocking the export library.";
+      elements.resultStatus.textContent = "Word report could not be generated. Please review the inputs and try again.";
     }
     if (typeof window.alert === "function") {
-      window.alert("PDF generation failed. Please refresh the page and try again.");
+      window.alert("Word report could not be generated. Please try again.");
     }
   } finally {
-    elements.pdfReport.classList.remove("is-active");
     button.disabled = false;
     button.textContent = originalLabel;
   }
 }
 
-function waitForNextFrame() {
-  return new Promise((resolve) => {
-    window.requestAnimationFrame(() => resolve());
+function buildCalculationReportData(result) {
+  const generatedAt = new Date();
+  const equations = getWordEquationSet(result.input);
+
+  return {
+    metadata: {
+      title: "Interaction-Based Column Designer",
+      subtitle: "Reinforced concrete column capacity verification and slenderness magnification report",
+      toolSlug: "rc-column-designer",
+      company: root.dataset.reportCompany || "Not specified",
+      project: root.dataset.reportProject || "Not specified",
+      preparedBy: root.dataset.reportPreparedBy || "Not specified",
+      generatedAt: formatReportDate(generatedAt),
+      disclaimer: root.dataset.reportDisclaimer || "",
+    },
+    summaryItems: [
+      { label: "Status", value: result.status, className: getStatusClass(result.status) },
+      { label: "Utilisation", value: `${formatPdfValue(result.utilisation, 2)} \u03B7` },
+      { label: "Amplified Moment", value: `${formatPdfValue(result.amplifiedMoment, 1)} kNm` },
+      { label: "Capacity", value: `${formatPdfValue(result.demandOnPhiCurve?.MuPhi, 1)} kNm` },
+    ],
+    inputRows: filterReportRows(getInputParameterRows(result.input), "Input Parameters"),
+    finalRows: filterReportRows(getFinalResultRows(result), "Final Results"),
+    intermediateRows: filterReportRows(getIntermediateRows(result), "Intermediate Calculations"),
+    methodologyItems: getMethodologyItems(result),
+    equationRows: getEquationRows(equations),
+    equations,
+    diagramSvgMarkup: serializeDiagramMarkup(),
+    visualCaption: elements.visualCaption?.textContent?.trim() || "Current section visualisation and interaction diagram.",
+    assumptions: [
+      "Results reflect the current tool inputs and section assumptions at the time of export.",
+      "Printed output should be reviewed by a qualified engineer before issue or construction use.",
+    ],
+  };
+}
+
+function buildFallbackCalculationReportData() {
+  return {
+    metadata: {
+      title: "Engineering Calculation Report",
+      subtitle: "Fallback engineering calculation report",
+      toolSlug: "rc-column-designer",
+      company: "Not specified",
+      project: "Not specified",
+      preparedBy: "Not specified",
+      generatedAt: new Date().toLocaleString(),
+      disclaimer: "",
+    },
+    summaryItems: [
+      { label: "Status", value: "WORD TEST", className: "pass" },
+      { label: "Utilisation", value: "N/A" },
+      { label: "Amplified Moment", value: "N/A" },
+      { label: "Capacity", value: "N/A" },
+    ],
+    inputRows: [["Test Input, x", "100", "mm"]],
+    finalRows: [["Test Result", "PASS", ""]],
+    intermediateRows: [["Report Generation Check", "Structured report data generated", ""]],
+    methodologyItems: ["Fallback report confirms the Word export pipeline is producing a structured document."],
+    equationRows: [
+      ["Interaction Method", "Nu = Cc + ΣFsi; Mu = |Cc zc + Σ(Fsi zi)|", "Primary section equilibrium relation"],
+      ["Section Strength", "a = γ dn; Cc = α2 f'c b a", "Compression-block force model"],
+      ["Slenderness Check", "δ = max(δb, δs)", "Moment magnification relationship"],
+    ],
+    equations: {
+      primary: "Nu = Cc + ΣFsi; Mu = |Cc zc + Σ(Fsi zi)|",
+      secondary: "a = γ dn; Cc = α2 f'c b a",
+      slenderness: "δ = max(δb, δs)",
+    },
+    diagramSvgMarkup: "",
+    visualCaption: "Fallback report with no live visualisation available.",
+    assumptions: ["Fallback content is shown because no live calculation result was available."],
+  };
+}
+
+function validateCalculationReportData(reportData) {
+  ["inputRows", "finalRows", "intermediateRows"].forEach((key) => {
+    if (!reportData[key].length) {
+      console.warn(`RC Column Word report: ${key} is empty.`);
+    }
   });
 }
 
-async function ensurePdfLibrary() {
-  if (typeof window.html2pdf === "function") {
-    return;
-  }
-
-  await loadExternalScript(HTML2PDF_CDN, "engineering-tools-html2pdf-runtime");
-
-  if (typeof window.html2pdf !== "function") {
-    throw new Error("html2pdf failed to load.");
-  }
-}
-
-function loadExternalScript(src, id) {
-  return new Promise((resolve, reject) => {
-    const existing = document.getElementById(id);
-    if (existing) {
-      if (existing.dataset.loaded === "true") {
-        resolve();
-        return;
-      }
-
-      existing.addEventListener("load", () => resolve(), { once: true });
-      existing.addEventListener("error", () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
-      return;
+function filterReportRows(rows, sectionName) {
+  return rows.filter((row) => {
+    const hasValue = row.some((cell) => cell !== undefined && cell !== null && String(cell).trim() !== "");
+    if (!hasValue) {
+      console.warn(`RC Column Word report: skipped empty row in ${sectionName}.`, row);
+      return false;
     }
 
-    const script = document.createElement("script");
-    script.id = id;
-    script.src = src;
-    script.async = true;
-    script.onload = () => {
-      script.dataset.loaded = "true";
-      resolve();
-    };
-    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-    document.head.appendChild(script);
+    const hasMeaningfulValue = row.slice(1).some((cell) => {
+      const value = String(cell ?? "").trim();
+      return value && value !== "N/A";
+    });
+
+    if (!hasMeaningfulValue) {
+      console.warn(`RC Column Word report: skipped unavailable row in ${sectionName}.`, row);
+      return false;
+    }
+
+    return true;
   });
-}
-
-function buildCalculationReport(result) {
-  const generatedAt = new Date();
-  const project = root.dataset.reportProject || "Not specified";
-  const company = root.dataset.reportCompany || "Not specified";
-  const preparedBy = root.dataset.reportPreparedBy || "Not specified";
-  const disclaimer = root.dataset.reportDisclaimer || "";
-  const inputRows = getInputParameterRows(result.input);
-  const intermediateRows = getIntermediateRows(result);
-  const finalRows = getFinalResultRows(result);
-  const methodologyItems = getMethodologyItems(result);
-  const equations = state.currentEquations || getEquationSet(result.input.sectionType);
-
-  // Build a dedicated printable HTML sheet that can be reused across tools.
-  elements.pdfReport.innerHTML = `
-    <div class="pdf-report__page">
-      <header class="pdf-report__header pdf-report__section">
-        <div>
-          <p class="pdf-report__eyebrow">Structural Engineering Calculation Sheet</p>
-          <h1 class="pdf-report__title">Interaction-Based Column Designer</h1>
-          <p class="pdf-report__subtitle">Reinforced concrete column capacity verification and slenderness magnification report</p>
-        </div>
-        <div class="pdf-report__meta">
-          <div><strong>Company</strong><span>${escapeXml(company)}</span></div>
-          <div><strong>Project</strong><span>${escapeXml(project)}</span></div>
-          <div><strong>Prepared By</strong><span>${escapeXml(preparedBy)}</span></div>
-          <div><strong>Generated</strong><span>${escapeXml(formatReportDate(generatedAt))}</span></div>
-        </div>
-      </header>
-
-      <section class="pdf-report__section">
-        <div class="pdf-report__section-head">
-          <h2>Design Summary</h2>
-          <span class="pdf-report__badge pdf-report__badge--${getStatusClass(result.status)}">${escapeXml(result.status.toUpperCase())}</span>
-        </div>
-        <div class="pdf-report__summary-grid">
-          ${createSummaryCard("Utilisation", `${formatPdfValue(result.utilisation, 2)} η`, "Demand / capacity ratio")}
-          ${createSummaryCard("Amplified Moment", `${formatPdfValue(result.amplifiedMoment, 1)} kNm`, "Second-order design moment")}
-          ${createSummaryCard("Capacity on Demand Line", `${formatPdfValue(result.demandOnPhiCurve?.MuPhi, 1)} kNm`, "Phi-reduced capacity")}
-          ${createSummaryCard("Slenderness Check", result.classification, "General Le / r review")}
-        </div>
-      </section>
-
-      <section class="pdf-report__section pdf-report__avoid-break">
-        <div class="pdf-report__section-head">
-          <h2>Input Parameters</h2>
-        </div>
-        ${createResultsTable(["Parameter", "Value", "Units"], inputRows)}
-      </section>
-
-      <section class="pdf-report__section pdf-report__diagram-card pdf-report__avoid-break">
-        <div class="pdf-report__section-head">
-          <h2>Section Visualisation</h2>
-        </div>
-        <div class="pdf-report__diagram-wrap">
-          ${serializeDiagramMarkup()}
-        </div>
-      </section>
-
-      <section class="pdf-report__section">
-        <div class="pdf-report__section-head">
-          <h2>Calculation Methodology</h2>
-        </div>
-        <ul class="pdf-report__list">
-          ${methodologyItems.map((item) => `<li>${escapeXml(item)}</li>`).join("")}
-        </ul>
-      </section>
-
-      <section class="pdf-report__section">
-        <div class="pdf-report__section-head">
-          <h2>Method Equations</h2>
-        </div>
-        <div class="pdf-report__equation-grid">
-          ${formatEquation("Interaction Method", equations.primary)}
-          ${formatEquation("Section Strength", equations.secondary)}
-          ${formatEquation("Slenderness Check", equations.slenderness)}
-        </div>
-      </section>
-
-      <section class="pdf-report__section">
-        <div class="pdf-report__section-head">
-          <h2>Intermediate Calculations</h2>
-        </div>
-        ${createResultsTable(["Calculation", "Value", "Units"], intermediateRows)}
-      </section>
-
-      <section class="pdf-report__section">
-        <div class="pdf-report__section-head">
-          <h2>Final Results</h2>
-        </div>
-        ${createResultsTable(["Result", "Value", "Units"], finalRows)}
-      </section>
-
-      ${disclaimer ? `
-        <section class="pdf-report__section pdf-report__section--disclaimer">
-          <div class="pdf-report__section-head">
-            <h2>Disclaimer</h2>
-          </div>
-          <p class="pdf-report__disclaimer">${escapeXml(disclaimer)}</p>
-        </section>
-      ` : ""}
-    </div>
-  `;
-
-  renderReportEquations(elements.pdfReport);
 }
 
 function getInputParameterRows(input) {
@@ -1387,59 +1305,538 @@ function getMethodologyItems(result) {
   ];
 }
 
-function createSummaryCard(label, value, note) {
-  return `
-    <article class="pdf-report__summary-card">
-      <span class="pdf-report__summary-label">${escapeXml(label)}</span>
-      <strong class="pdf-report__summary-value">${escapeXml(value)}</strong>
-      <span class="pdf-report__summary-note">${escapeXml(note)}</span>
-    </article>
-  `;
-}
-
-function createResultsTable(headers, rows) {
-  return `
-    <table class="pdf-report__table">
-      <thead>
-        <tr>${headers.map((header) => `<th>${escapeXml(header)}</th>`).join("")}</tr>
-      </thead>
-      <tbody>
-        ${rows.map((row) => `
-          <tr>
-            ${row.map((cell, index) => `<td${index === 0 ? ' class="pdf-report__cell-label"' : ""}>${escapeXml(String(cell))}</td>`).join("")}
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-  `;
-}
-
-function formatEquation(title, expression) {
-  const id = `pdf-eq-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-  return `
-    <article class="pdf-report__equation-card">
-      <h3>${escapeXml(title)}</h3>
-      <div id="${id}" class="pdf-report__equation" data-expression="${escapeXml(expression)}"></div>
-    </article>
-  `;
-}
-
-function renderReportEquations(container) {
-  // Render KaTeX into the dedicated report template before PDF conversion.
-  container.querySelectorAll(".pdf-report__equation").forEach((node) => {
-    const expression = node.dataset.expression || "";
-    if (window.katex) {
-      window.katex.render(expression, node, { throwOnError: false, displayMode: true });
-    } else {
-      node.textContent = expression;
-    }
-  });
+function getEquationRows(equations) {
+  return [
+    ["Interaction Method", equations.primary || "Not available", "Primary section equilibrium and moment capacity relationship"],
+    ["Section Strength", equations.secondary || "Not available", "Stress-block, strain, and section-force formulation"],
+    ["Slenderness Check", equations.slenderness || "Not available", "Moment magnification and stability check relationship"],
+  ];
 }
 
 function serializeDiagramMarkup() {
-  // Clone the live SVG so the PDF report includes the current engineering diagram state.
-  const svgMarkup = elements.svg ? elements.svg.outerHTML : "";
-  return svgMarkup ? `<div class="pdf-report__svg-frame">${svgMarkup}</div>` : "<p>No diagram available.</p>";
+  return elements.svg ? elements.svg.outerHTML : "";
+}
+
+function downloadBlob(filename, blob) {
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  window.setTimeout(() => {
+    window.URL.revokeObjectURL(url);
+  }, 1000);
+}
+
+async function buildWordReportDocument(reportData) {
+  const docx = window.docx;
+  const {
+    AlignmentType,
+    BorderStyle,
+    Document,
+    Footer,
+    ImageRun,
+    Packer,
+    PageNumber,
+    Paragraph,
+    ShadingType,
+    Table,
+    TableCell,
+    TableRow,
+    TextRun,
+    WidthType,
+  } = docx;
+
+  void Packer;
+
+  validateCalculationReportData(reportData);
+
+  const diagramSection = await createDiagramSection(ImageRun, Paragraph, reportData.diagramSvgMarkup, reportData.visualCaption);
+  const footer = new Footer({
+    children: [
+      new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [
+          new TextRun({
+            children: ["Page ", PageNumber.CURRENT, " of ", PageNumber.TOTAL_PAGES],
+            size: 16,
+            color: "6B7280",
+          }),
+        ],
+      }),
+    ],
+  });
+
+  const children = [
+    createReportTitleParagraph(Paragraph, TextRun, reportData.metadata),
+    createReportSubtitleParagraph(Paragraph, TextRun, reportData.metadata),
+    ...createMetadataSection(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, reportData.metadata),
+    ...createSummarySection(Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, ShadingType, WidthType, reportData.summaryItems),
+    ...createInputsTable(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, reportData.inputRows),
+    ...createResultsTable(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, reportData.finalRows),
+    ...diagramSection,
+    ...createCalculationSection(Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, ShadingType, WidthType, reportData),
+    ...createAssumptionsSection(Paragraph, TextRun, reportData.assumptions, reportData.metadata.disclaimer),
+  ];
+
+  return new Document({
+    creator: "Engineering Tools Plugin",
+    title: reportData.metadata.title || "Engineering Calculation Report",
+    description: reportData.metadata.subtitle || "Engineering calculation sheet",
+    styles: {
+      paragraphStyles: [
+        {
+          id: "ReportTitle",
+          name: "Report Title",
+          basedOn: "Normal",
+          next: "Normal",
+          quickFormat: true,
+          run: { bold: true, size: 36, color: "1F2937" },
+          paragraph: { spacing: { after: 120 } },
+        },
+        {
+          id: "ReportHeading",
+          name: "Report Heading",
+          basedOn: "Normal",
+          next: "Normal",
+          quickFormat: true,
+          run: { bold: true, size: 24, color: "1F2937" },
+          paragraph: { spacing: { before: 180, after: 80 }, keepNext: true },
+        },
+        {
+          id: "BodyCompact",
+          name: "Body Compact",
+          basedOn: "Normal",
+          next: "Normal",
+          quickFormat: true,
+          run: { size: 18, color: "222222" },
+          paragraph: { spacing: { after: 60 } },
+        },
+      ],
+    },
+    sections: [
+      {
+        properties: {
+          page: {
+            margin: {
+              top: 720,
+              right: 720,
+              bottom: 720,
+              left: 720,
+            },
+          },
+        },
+        footers: {
+          default: footer,
+        },
+        children,
+      },
+    ],
+  });
+}
+
+function createReportTitleParagraph(Paragraph, TextRun, metadata) {
+  return new Paragraph({
+    style: "ReportTitle",
+    children: [
+      new TextRun({
+        text: metadata.title || "Engineering Calculation Report",
+        bold: true,
+      }),
+    ],
+  });
+}
+
+function createReportSubtitleParagraph(Paragraph, TextRun, metadata) {
+  return new Paragraph({
+    style: "BodyCompact",
+    children: [
+      new TextRun({
+        text: metadata.subtitle || "",
+        italics: true,
+        color: "4B5563",
+      }),
+    ],
+  });
+}
+
+function createMetadataSection(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, metadata) {
+  return [
+    createSectionHeading(Paragraph, TextRun, "Project Metadata"),
+    createWordTable(
+      Table,
+      TableRow,
+      TableCell,
+      Paragraph,
+      TextRun,
+      BorderStyle,
+      ShadingType,
+      WidthType,
+      ["Field", "Value"],
+      [
+        ["Company", metadata.company || "Not specified"],
+        ["Project", metadata.project || "Not specified"],
+        ["Prepared By", metadata.preparedBy || "Not specified"],
+        ["Generated", metadata.generatedAt || formatReportDate(new Date())],
+      ]
+    ),
+  ];
+}
+
+function createSummarySection(Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, ShadingType, WidthType, summaryItems) {
+  const rows = (summaryItems || []).map((item) => [
+    item.label,
+    item.value,
+  ]);
+
+  return [
+    createSectionHeading(Paragraph, TextRun, "Design Summary"),
+    createWordTable(
+      Table,
+      TableRow,
+      TableCell,
+      Paragraph,
+      TextRun,
+      BorderStyle,
+      ShadingType,
+      WidthType,
+      ["Metric", "Value"],
+      rows,
+      { valueStyles: summaryItems }
+    ),
+  ];
+}
+
+function createInputsTable(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, rows) {
+  return [
+    createSectionHeading(Paragraph, TextRun, "Input Parameters"),
+    createWordTable(
+      Table,
+      TableRow,
+      TableCell,
+      Paragraph,
+      TextRun,
+      BorderStyle,
+      ShadingType,
+      WidthType,
+      ["Parameter", "Value", "Units"],
+      rows
+    ),
+  ];
+}
+
+function createResultsTable(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, rows) {
+  return [
+    createSectionHeading(Paragraph, TextRun, "Results and Checks"),
+    createWordTable(
+      Table,
+      TableRow,
+      TableCell,
+      Paragraph,
+      TextRun,
+      BorderStyle,
+      ShadingType,
+      WidthType,
+      ["Result", "Value", "Units"],
+      rows
+    ),
+  ];
+}
+
+function createCalculationSection(Paragraph, TextRun, Table, TableRow, TableCell, BorderStyle, ShadingType, WidthType, reportData) {
+  const children = [
+    createSectionHeading(Paragraph, TextRun, "Calculation Methodology"),
+    ...createBulletParagraphs(Paragraph, TextRun, reportData.methodologyItems),
+    createSectionHeading(Paragraph, TextRun, "Governing Equations"),
+    ...((reportData.equationRows || []).map((row) => createEquationParagraph(Paragraph, TextRun, row[0], row[1], row[2]))),
+    createSectionHeading(Paragraph, TextRun, "Intermediate Calculations"),
+    createWordTable(
+      Table,
+      TableRow,
+      TableCell,
+      Paragraph,
+      TextRun,
+      BorderStyle,
+      ShadingType,
+      WidthType,
+      ["Calculation", "Value", "Units"],
+      reportData.intermediateRows
+    ),
+  ];
+
+  return children;
+}
+
+function createEquationParagraph(Paragraph, TextRun, title, expression, purpose) {
+  return new Paragraph({
+    style: "BodyCompact",
+    spacing: { after: 100 },
+    children: [
+      new TextRun({ text: `${title}: `, bold: true }),
+      new TextRun({ text: expression || "Not available" }),
+      new TextRun({ text: purpose ? `  (${purpose})` : "", italics: true, color: "4B5563" }),
+    ],
+  });
+}
+
+function createAssumptionsSection(Paragraph, TextRun, assumptions, disclaimer) {
+  const children = [
+    createSectionHeading(Paragraph, TextRun, "Assumptions and Notes"),
+    ...createBulletParagraphs(Paragraph, TextRun, assumptions),
+  ];
+
+  if (disclaimer) {
+    children.push(createSectionHeading(Paragraph, TextRun, "Disclaimer"));
+    children.push(new Paragraph({
+      style: "BodyCompact",
+      children: [new TextRun({ text: disclaimer, color: "6B7280" })],
+    }));
+  }
+
+  return children;
+}
+
+function createSectionHeading(Paragraph, TextRun, text) {
+  return new Paragraph({
+    style: "ReportHeading",
+    heading: window.docx.HeadingLevel.HEADING_2,
+    children: [new TextRun({ text, bold: true })],
+  });
+}
+
+function createBulletParagraphs(Paragraph, TextRun, items) {
+  if (!items?.length) {
+    return [
+      new Paragraph({
+        style: "BodyCompact",
+        children: [new TextRun({ text: "No additional notes were available for this section.", color: "6B7280" })],
+      }),
+    ];
+  }
+
+  return items.map((item) => new Paragraph({
+    style: "BodyCompact",
+    children: [
+      new TextRun({ text: "• ", bold: true }),
+      new TextRun({ text: item }),
+    ],
+  }));
+}
+
+function createWordTable(Table, TableRow, TableCell, Paragraph, TextRun, BorderStyle, ShadingType, WidthType, headers, rows, options = {}) {
+  const border = { style: BorderStyle.SINGLE, size: 1, color: "D9DEE3" };
+  const tableRows = [
+    new TableRow({
+      tableHeader: true,
+      children: headers.map((header) => new TableCell({
+        shading: { fill: "F3F5F7", type: ShadingType.CLEAR, color: "auto" },
+        borders: { top: border, right: border, bottom: border, left: border },
+        margins: { top: 90, bottom: 90, left: 120, right: 120 },
+        children: [
+          new Paragraph({
+            children: [new TextRun({ text: header, bold: true, size: 18 })],
+          }),
+        ],
+      })),
+    }),
+  ];
+
+  (rows || []).forEach((row) => {
+    tableRows.push(new TableRow({
+      children: row.map((cell, index) => new TableCell({
+        borders: { top: border, right: border, bottom: border, left: border },
+        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        children: [
+          new Paragraph({
+            children: [createTableCellRun(TextRun, String(cell ?? ""), index === 0, row, options)],
+          }),
+        ],
+      })),
+    }));
+  });
+
+  return new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: tableRows,
+  });
+}
+
+function createTableCellRun(TextRun, value, isLabelCell, row, options) {
+  const unitsText = String(row?.[2] ?? "");
+  const valueStyle = options.valueStyles?.find((item) => item.value === row?.[1]);
+  const color = isLabelCell
+    ? "1F2937"
+    : valueStyle?.className === "pass" || unitsText === "PASS"
+      ? "157347"
+      : valueStyle?.className === "fail" || unitsText === "FAIL"
+        ? "B02A37"
+        : valueStyle?.className === "review"
+          ? "9A6700"
+          : "222222";
+
+  return new TextRun({
+    text: value,
+    bold: isLabelCell || unitsText === "PASS" || unitsText === "FAIL",
+    color,
+    size: 18,
+  });
+}
+
+async function createDiagramSection(ImageRun, Paragraph, diagramSvgMarkup, visualCaption) {
+  const children = [createSectionHeading(Paragraph, window.docx.TextRun, "Section Visualisation and Interaction Diagram")];
+  children.push(new Paragraph({
+    style: "BodyCompact",
+    children: [new window.docx.TextRun({ text: visualCaption || "Current section visualisation and interaction diagram.", color: "4B5563" })],
+  }));
+
+  const diagramImage = await createDiagramImage(diagramSvgMarkup);
+
+  if (!diagramImage) {
+    children.push(new Paragraph({
+      style: "BodyCompact",
+      children: [new window.docx.TextRun({ text: "The live visualisation could not be embedded in this report.", color: "B02A37" })],
+    }));
+    return children;
+  }
+
+  children.push(new Paragraph({
+    alignment: window.docx.AlignmentType.CENTER,
+    spacing: { after: 140 },
+    children: [
+      new ImageRun({
+        data: diagramImage.data,
+        transformation: diagramImage.transformation,
+        type: diagramImage.type,
+      }),
+    ],
+  }));
+
+  return children;
+}
+
+async function createDiagramImage(diagramSvgMarkup) {
+  if (!diagramSvgMarkup) {
+    return null;
+  }
+
+  try {
+    const { blob, width, height } = createSvgBlob(diagramSvgMarkup);
+    const image = await loadBlobImage(blob);
+    const canvas = document.createElement("canvas");
+    const maxWidth = 620;
+    const scale = Math.min(1, maxWidth / width);
+    const targetWidth = Math.max(320, Math.round(width * scale));
+    const targetHeight = Math.max(180, Math.round(height * scale));
+
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    const context = canvas.getContext("2d");
+    if (!context) {
+      return null;
+    }
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    const pngBlob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png", 1));
+    if (!pngBlob) {
+      return null;
+    }
+
+    return {
+      data: new Uint8Array(await pngBlob.arrayBuffer()),
+      transformation: {
+        width: targetWidth,
+        height: targetHeight,
+      },
+      type: "png",
+    };
+  } catch (error) {
+    console.warn("RC Column Word report: diagram conversion failed.", error);
+    return null;
+  }
+}
+
+function createSvgBlob(svgMarkup) {
+  const parser = new DOMParser();
+  const svgDocument = parser.parseFromString(svgMarkup, "image/svg+xml");
+  const svgElement = svgDocument.documentElement;
+  const viewBox = (svgElement.getAttribute("viewBox") || "0 0 1120 640").split(/\s+/).map(Number);
+  const width = Number(svgElement.getAttribute("width")) || viewBox[2] || 1120;
+  const height = Number(svgElement.getAttribute("height")) || viewBox[3] || 640;
+
+  svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svgElement.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  svgElement.setAttribute("width", String(width));
+  svgElement.setAttribute("height", String(height));
+  svgElement.setAttribute("viewBox", viewBox.join(" "));
+
+  if (!svgElement.querySelector("rect[data-export-background='true']")) {
+    const background = svgDocument.createElementNS("http://www.w3.org/2000/svg", "rect");
+    background.setAttribute("data-export-background", "true");
+    background.setAttribute("x", "0");
+    background.setAttribute("y", "0");
+    background.setAttribute("width", String(width));
+    background.setAttribute("height", String(height));
+    background.setAttribute("fill", "#ffffff");
+    svgElement.insertBefore(background, svgElement.firstChild);
+  }
+
+  const serializedSvg = new XMLSerializer().serializeToString(svgElement);
+  const blob = new Blob([serializedSvg], { type: "image/svg+xml;charset=utf-8" });
+  return { blob, width, height };
+}
+
+function loadBlobImage(blob) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const image = new Image();
+
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(image);
+    };
+
+    image.onerror = (error) => {
+      URL.revokeObjectURL(url);
+      reject(error);
+    };
+
+    image.src = url;
+  });
+}
+
+function getWordEquationSet(input) {
+  const frameType = input.frameType || "braced";
+  const unbracedMethod = input.unbracedMethod || "storey";
+
+  if (input.sectionType === "rectangular") {
+    return {
+      primary: "Nu = Cc + ΣFsi; Mu = |Cc (D/2 - a/2) + Σ[Fsi (D/2 - yi)]|",
+      secondary: "a = γ dn; Cc = α2 f'c b a; εsi = εcu (dn - yi) / dn; fsi = clamp(Es εsi, ±fsy)",
+      slenderness: frameType === "braced"
+        ? "r = 0.3D; Le = k Lu; δb = max[1, km / (1 - N* / Nc)]; Nc = (π² / Le²) [182 d0 (ϕMc) / (1 + βd)]"
+        : unbracedMethod === "storey"
+          ? "r = 0.3D; Le = k Lu; δ = max(δb, δs); δs = 1 / [1 - (ΣN* / ΣNc)]"
+          : "r = 0.3D; Le = k Lu; δ = max(δb, δs); δs = 1 / [1 - (1 + βd) / (αs λuc)], αs = 0.6",
+    };
+  }
+
+  return {
+    primary: "Nu = Cc + ΣFsi; Mu = |Cc (r - dc) + Σ[Fsi (r - dsi)]|",
+    secondary: "bo = 2√(2ar - a²); α = 4 tan⁻¹(2a / bo); A'c = 0.5 r² (α - sin α); Cc = 0.85 f'c A'c",
+    slenderness: frameType === "braced"
+      ? "r = 0.25D; Le = k Lu; δb = max[1, km / (1 - N* / Nc)]; Nc = (π² / Le²) [182 d0 (ϕMc) / (1 + βd)]"
+      : unbracedMethod === "storey"
+        ? "r = 0.25D; Le = k Lu; δ = max(δb, δs); δs = 1 / [1 - (ΣN* / ΣNc)]"
+        : "r = 0.25D; Le = k Lu; δ = max(δb, δs); δs = 1 / [1 - (1 + βd) / (αs λuc)], αs = 0.6",
+  };
 }
 
 function formatReportDate(date) {

@@ -1,0 +1,21 @@
+{
+  "slug": "steel-closed-section-capacities-lite",
+  "shortcode": "steel_closed_section_capacities_lite",
+  "title": "Steel Closed Section Capacities (Lite)",
+  "category": "steel",
+  "description": "Native WordPress calculator for RHS, SHS, and CHS tabulated steel closed section capacity verification with live SVG output and Word export.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "local-storage",
+    "responsive-ui",
+    "equation-rendering",
+    "svg-output",
+    "word-export",
+    "audit-trail"
+  ]
+}

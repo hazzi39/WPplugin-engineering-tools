@@ -1,0 +1,17 @@
+{
+  "slug": "open-section-capacity-lite",
+  "shortcode": "open_section_capacity_lite",
+  "title": "Open Section Capacity Lite",
+  "category": "steel",
+  "description": "Lightweight steel open-section utilisation calculator for major-axis bending, minor-axis bending, and shear using tabulated design capacities.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui"
+  ]
+}

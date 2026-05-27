@@ -1,0 +1,27 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs
+*.log
+*.tmp
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+coverage/
+*.zip
+
+# Environment files
+.env
+.env.*
+
+# WordPress/runtime artifacts
+debug.log
+php-error.log

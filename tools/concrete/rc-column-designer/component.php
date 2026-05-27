@@ -7,11 +7,10 @@
 
 declare(strict_types=1);
 
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 $instanceId = (string) $context['instance_id'];
+$toolTitle = $context['tool'] instanceof \EngineeringTools\Tool ? $context['tool']->title() : 'RC Column Designer';
 $reportSettings = shortcode_atts(
     array(
         'company' => '',
@@ -36,7 +35,7 @@ $reportSettings = shortcode_atts(
     <header class="app-header surface-card">
       <div>
         <p class="eyebrow">Unified RC Column Design</p>
-        <h1>Interaction-Based Column Designer</h1>
+        <h1><?php echo esc_html($toolTitle); ?></h1>
       </div>
     </header>
 
@@ -63,7 +62,7 @@ $reportSettings = shortcode_atts(
             </div>
             <div class="result-actions">
               <button id="save-result" class="primary-button" type="button">Save Result</button>
-              <button id="export-pdf" class="secondary-button" type="button">Export PDF</button>
+              <button id="export-pdf" class="secondary-button" type="button">Export Word Report</button>
             </div>
           </div>
 
@@ -258,6 +257,5 @@ $reportSettings = shortcode_atts(
       </div>
     </section>
   </div>
-  <div id="pdf-report" class="pdf-report" aria-hidden="true"></div>
 </section>
 

@@ -7,9 +7,7 @@ declare(strict_types=1);
 
 namespace EngineeringTools;
 
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 final class Tool_Registry
 {
@@ -47,6 +45,9 @@ final class Tool_Registry
             $this->toolsBySlug[$tool->slug()] = $tool;
             $this->toolsByShortcode[$tool->shortcode()] = $tool;
         }
+
+        ksort($this->toolsBySlug);
+        ksort($this->toolsByShortcode);
     }
 
     /**

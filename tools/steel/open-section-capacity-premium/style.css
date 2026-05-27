@@ -1,0 +1,685 @@
+.et-tool--oscp {
+  --et-oscp-bg: #f5f7f6;
+  --et-oscp-surface: rgba(255, 255, 255, 0.98);
+  --et-oscp-surface-soft: #f8fbff;
+  --et-oscp-text: #183247;
+  --et-oscp-muted: #697d8f;
+  --et-oscp-accent: #2563eb;
+  --et-oscp-accent-strong: #1d4ed8;
+  --et-oscp-accent-soft: rgba(37, 99, 235, 0.1);
+  --et-oscp-teal: #10979a;
+  --et-oscp-teal-soft: rgba(16, 151, 154, 0.12);
+  --et-oscp-line: rgba(24, 50, 71, 0.1);
+  --et-oscp-line-strong: rgba(24, 50, 71, 0.18);
+  --et-oscp-success: #1e7a57;
+  --et-oscp-warning: #9c6b19;
+  --et-oscp-danger: #b94b4b;
+  --et-oscp-shadow-soft: 0 18px 40px rgba(24, 50, 71, 0.08);
+  --et-oscp-shadow-lift: 0 24px 56px rgba(24, 50, 71, 0.12);
+  --et-oscp-radius-xl: 20px;
+  --et-oscp-radius-lg: 18px;
+  --et-oscp-radius-md: 16px;
+  --et-oscp-radius-sm: 12px;
+  --et-oscp-transition: 180ms ease;
+  color: var(--et-oscp-text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.09), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(16, 151, 154, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 247, 246, 0.98));
+}
+
+.et-tool--oscp *,
+.et-tool--oscp *::before,
+.et-tool--oscp *::after {
+  box-sizing: border-box;
+}
+
+.et-tool--oscp button,
+.et-tool--oscp input,
+.et-tool--oscp select {
+  font: inherit;
+}
+
+.et-tool--oscp .et-oscp__shell {
+  width: min(100%, calc(100% - 24px));
+  margin: 12px auto 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--oscp .et-oscp__card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-xl);
+  background: var(--et-oscp-surface);
+  box-shadow: var(--et-oscp-shadow-soft);
+}
+
+.et-tool--oscp .et-oscp__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent 46%);
+  pointer-events: none;
+}
+
+.et-tool--oscp .et-oscp__header,
+.et-tool--oscp .et-oscp__visual-card,
+.et-tool--oscp .et-oscp__result-card,
+.et-tool--oscp .et-oscp__right-column > .et-oscp__card,
+.et-tool--oscp .et-oscp__shell > .et-oscp__card:last-child {
+  padding: 20px;
+}
+
+.et-tool--oscp .et-oscp__header,
+.et-tool--oscp .et-oscp__main-grid,
+.et-tool--oscp .et-oscp__left-column,
+.et-tool--oscp .et-oscp__right-column,
+.et-tool--oscp .et-oscp__field-grid,
+.et-tool--oscp .et-oscp__metric-grid,
+.et-tool--oscp .et-oscp__group-stack,
+.et-tool--oscp .et-oscp__checks,
+.et-tool--oscp .et-oscp__equation-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--oscp .et-oscp__eyebrow,
+.et-tool--oscp .et-oscp__card-kicker {
+  margin: 0 0 8px;
+  color: var(--et-oscp-accent-strong);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.et-tool--oscp .et-oscp__title,
+.et-tool--oscp .et-oscp__card-header h3,
+.et-tool--oscp .et-oscp__mini-header h4,
+.et-tool--oscp .et-oscp__notice h4,
+.et-tool--oscp p {
+  margin: 0;
+}
+
+.et-tool--oscp .et-oscp__title {
+  font-size: clamp(2rem, 4.8vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.et-tool--oscp .et-oscp__lead {
+  max-width: 72ch;
+  color: var(--et-oscp-muted);
+  line-height: 1.6;
+}
+
+.et-tool--oscp .et-oscp__main-grid {
+  grid-template-columns: minmax(0, 1.03fr) minmax(340px, 0.97fr);
+}
+
+.et-tool--oscp .et-oscp__left-column,
+.et-tool--oscp .et-oscp__right-column {
+  align-content: start;
+}
+
+.et-tool--oscp .et-oscp__card-header,
+.et-tool--oscp .et-oscp__card-heading,
+.et-tool--oscp .et-oscp__mini-header,
+.et-tool--oscp .et-oscp__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.et-tool--oscp .et-oscp__card-header {
+  margin-bottom: 16px;
+}
+
+.et-tool--oscp .et-oscp__card-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.et-tool--oscp .et-oscp__card-header h3 {
+  font-size: clamp(1.08rem, 2vw, 1.38rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.et-tool--oscp .et-oscp__card-heading h3 {
+  margin: 0;
+  font-size: clamp(1.08rem, 2vw, 1.38rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.et-tool--oscp .et-oscp__status-chip,
+.et-tool--oscp .et-oscp__status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  background: var(--et-oscp-accent-soft);
+  color: var(--et-oscp-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background var(--et-oscp-transition), border-color var(--et-oscp-transition), color var(--et-oscp-transition);
+}
+
+.et-tool--oscp .et-oscp__status-chip[data-tone="pass"],
+.et-tool--oscp .et-oscp__status-pill[data-tone="pass"] {
+  background: rgba(30, 122, 87, 0.1);
+  border-color: rgba(30, 122, 87, 0.18);
+  color: var(--et-oscp-success);
+}
+
+.et-tool--oscp .et-oscp__status-chip[data-tone="warn"],
+.et-tool--oscp .et-oscp__status-pill[data-tone="warn"] {
+  background: rgba(156, 107, 25, 0.1);
+  border-color: rgba(156, 107, 25, 0.18);
+  color: var(--et-oscp-warning);
+}
+
+.et-tool--oscp .et-oscp__status-chip[data-tone="fail"],
+.et-tool--oscp .et-oscp__status-pill[data-tone="fail"] {
+  background: rgba(185, 75, 75, 0.11);
+  border-color: rgba(185, 75, 75, 0.18);
+  color: var(--et-oscp-danger);
+}
+
+.et-tool--oscp .et-oscp__diagram-frame {
+  min-height: 320px;
+  padding: 8px;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 253, 0.99)),
+    linear-gradient(90deg, transparent 0, transparent 23px, rgba(37, 99, 235, 0.04) 24px),
+    linear-gradient(transparent 0, transparent 23px, rgba(37, 99, 235, 0.04) 24px);
+  background-size: auto, 24px 24px, 24px 24px;
+}
+
+.et-tool--oscp .et-oscp__diagram {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.et-tool--oscp .et-oscp__visual-note {
+  margin-top: 14px;
+  color: var(--et-oscp-muted);
+  line-height: 1.55;
+}
+
+.et-tool--oscp .et-oscp__visualization-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  color: var(--et-oscp-muted);
+  line-height: 1.55;
+}
+
+.et-tool--oscp .et-oscp__status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.et-tool--oscp .et-oscp__hero {
+  padding: 20px;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-lg);
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.98));
+  transition: border-color var(--et-oscp-transition), background var(--et-oscp-transition), transform var(--et-oscp-transition);
+}
+
+.et-tool--oscp .et-oscp__hero[data-tone="pass"] {
+  border-color: rgba(30, 122, 87, 0.2);
+  background: linear-gradient(145deg, rgba(30, 122, 87, 0.1), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--oscp .et-oscp__hero[data-tone="warn"] {
+  border-color: rgba(156, 107, 25, 0.2);
+  background: linear-gradient(145deg, rgba(156, 107, 25, 0.11), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--oscp .et-oscp__hero[data-tone="fail"] {
+  border-color: rgba(185, 75, 75, 0.2);
+  background: linear-gradient(145deg, rgba(185, 75, 75, 0.12), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--oscp .et-oscp__hero-label,
+.et-tool--oscp .et-oscp__metric span,
+.et-tool--oscp .et-oscp__equation-title,
+.et-tool--oscp .et-oscp__table th,
+.et-tool--oscp .et-oscp__check p {
+  color: var(--et-oscp-muted);
+}
+
+.et-tool--oscp .et-oscp__hero-value {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.et-tool--oscp .et-oscp__hero-note {
+  margin-top: 10px;
+  color: var(--et-oscp-muted);
+  line-height: 1.55;
+}
+
+.et-tool--oscp .et-oscp__metric-grid--primary,
+.et-tool--oscp .et-oscp__metric-grid--secondary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--oscp .et-oscp__metric-grid--primary {
+  margin-top: 16px;
+}
+
+.et-tool--oscp .et-oscp__metric,
+.et-tool--oscp .et-oscp__input-group,
+.et-tool--oscp .et-oscp__notice,
+.et-tool--oscp .et-oscp__equation-card,
+.et-tool--oscp .et-oscp__check,
+.et-tool--oscp .et-oscp__equation-panel {
+  padding: 16px;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 253, 0.98));
+}
+
+.et-tool--oscp .et-oscp__metric strong {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(1.3rem, 3vw, 1.95rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.et-tool--oscp .et-oscp__metric small {
+  display: block;
+  margin-top: 8px;
+  color: var(--et-oscp-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.et-tool--oscp .et-oscp__metric--accent {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--oscp .et-oscp__button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--et-oscp-transition), box-shadow var(--et-oscp-transition), background var(--et-oscp-transition), opacity var(--et-oscp-transition);
+}
+
+.et-tool--oscp .et-oscp__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.et-tool--oscp .et-oscp__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.et-tool--oscp .et-oscp__button--primary {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, var(--et-oscp-accent), var(--et-oscp-teal));
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.2);
+}
+
+.et-tool--oscp .et-oscp__button--ghost {
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--et-oscp-accent-strong);
+}
+
+.et-tool--oscp .et-oscp__field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--oscp .et-oscp__field-grid--single {
+  grid-template-columns: 1fr;
+}
+
+.et-tool--oscp .et-oscp__field {
+  display: grid;
+  gap: 8px;
+}
+
+.et-tool--oscp .et-oscp__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.et-tool--oscp .et-oscp__control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  transition: border-color var(--et-oscp-transition), box-shadow var(--et-oscp-transition), transform var(--et-oscp-transition);
+}
+
+.et-tool--oscp .et-oscp__control:focus-within {
+  border-color: rgba(37, 99, 235, 0.38);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.et-tool--oscp .et-oscp__control.has-error {
+  border-color: rgba(185, 75, 75, 0.36);
+  box-shadow: 0 0 0 4px rgba(185, 75, 75, 0.08);
+}
+
+.et-tool--oscp .et-oscp__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--et-oscp-text);
+}
+
+.et-tool--oscp .et-oscp__select {
+  appearance: none;
+}
+
+.et-tool--oscp .et-oscp__unit {
+  color: var(--et-oscp-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.et-tool--oscp .et-oscp__error {
+  min-height: 18px;
+  color: var(--et-oscp-danger);
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.et-tool--oscp .et-oscp__mini-header {
+  margin-bottom: 14px;
+}
+
+.et-tool--oscp .et-oscp__mini-header h4 {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.et-tool--oscp .et-oscp__mini-header span {
+  color: var(--et-oscp-muted);
+  font-size: 0.82rem;
+}
+
+.et-tool--oscp .et-oscp__notice {
+  margin-top: 18px;
+}
+
+.et-tool--oscp .et-oscp__notice h4 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.et-tool--oscp .et-oscp__checks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.et-tool--oscp .et-oscp__check-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.et-tool--oscp .et-oscp__check-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 253, 0.98));
+}
+
+.et-tool--oscp .et-oscp__check-row strong,
+.et-tool--oscp .et-oscp__check-row span {
+  display: block;
+}
+
+.et-tool--oscp .et-oscp__check-row span {
+  color: var(--et-oscp-muted);
+  font-size: 0.9rem;
+}
+
+.et-tool--oscp .et-oscp__check-ratio {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--et-oscp-text);
+}
+
+.et-tool--oscp .et-oscp__check strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.et-tool--oscp .et-oscp__check--pass {
+  border-color: rgba(30, 122, 87, 0.22);
+  background: rgba(30, 122, 87, 0.1);
+}
+
+.et-tool--oscp .et-oscp__check--warn {
+  border-color: rgba(156, 107, 25, 0.22);
+  background: rgba(156, 107, 25, 0.1);
+}
+
+.et-tool--oscp .et-oscp__check--fail {
+  border-color: rgba(185, 75, 75, 0.22);
+  background: rgba(185, 75, 75, 0.1);
+}
+
+.et-tool--oscp .et-oscp__equation-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--et-oscp-accent-strong);
+}
+
+.et-tool--oscp .et-oscp__equation-stack {
+  margin-top: 16px;
+}
+
+.et-tool--oscp .et-oscp__math {
+  overflow-x: auto;
+}
+
+.et-tool--oscp .et-oscp__math .katex-display {
+  margin: 0;
+}
+
+.et-tool--oscp .et-oscp__export-feedback {
+  min-height: 18px;
+  margin-top: 10px;
+  color: var(--et-oscp-muted);
+  font-size: 0.8rem;
+}
+
+.et-tool--oscp .et-oscp__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.et-tool--oscp .et-oscp__table-wrap {
+  overflow: auto;
+  border: 1px solid var(--et-oscp-line);
+  border-radius: var(--et-oscp-radius-lg);
+}
+
+.et-tool--oscp .et-oscp__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.et-tool--oscp .et-oscp__table th,
+.et-tool--oscp .et-oscp__table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--et-oscp-line);
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.et-tool--oscp .et-oscp__table thead {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.et-tool--oscp .et-oscp__table th {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.et-tool--oscp .et-oscp__table tbody tr:nth-child(even) {
+  background: rgba(24, 50, 71, 0.02);
+}
+
+.et-tool--oscp .et-oscp__empty-row {
+  color: var(--et-oscp-muted);
+  text-align: center;
+}
+
+.et-tool--oscp .et-oscp__diagram-empty {
+  fill: var(--et-oscp-muted);
+  font-size: 15px;
+}
+
+.et-tool--oscp .et-oscp__svg-grid {
+  stroke: rgba(37, 99, 235, 0.07);
+  stroke-width: 1;
+}
+
+.et-tool--oscp .et-oscp__svg-shape {
+  fill: rgba(221, 233, 243, 0.9);
+  stroke: #2f5d7d;
+  stroke-width: 3;
+}
+
+.et-tool--oscp .et-oscp__svg-axis {
+  stroke: rgba(95, 121, 142, 0.7);
+  stroke-width: 1.5;
+  stroke-dasharray: 8 8;
+}
+
+.et-tool--oscp .et-oscp__svg-centroid {
+  fill: #173247;
+}
+
+.et-tool--oscp .et-oscp__svg-dim,
+.et-tool--oscp .et-oscp__svg-arrow {
+  stroke: #10979a;
+  stroke-width: 2.5;
+}
+
+.et-tool--oscp .et-oscp__svg-label {
+  fill: #476172;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.et-tool--oscp .et-oscp__svg-label-strong {
+  font-weight: 700;
+}
+
+.et-tool--oscp .et-oscp__svg-axis-label {
+  fill: #668195;
+}
+
+.et-tool--oscp .et-oscp__svg-caption {
+  fill: #668195;
+  font-size: 12px;
+}
+
+.et-tool--oscp .et-oscp__svg-action-major {
+  stroke: #2563eb;
+  stroke-width: 3;
+}
+
+.et-tool--oscp .et-oscp__svg-action-minor {
+  stroke: #10979a;
+  stroke-width: 3;
+}
+
+.et-tool--oscp .et-oscp__svg-action-shear {
+  stroke: #c57d16;
+  stroke-width: 3;
+}
+
+@media (max-width: 1200px) {
+  .et-tool--oscp .et-oscp__main-grid,
+  .et-tool--oscp .et-oscp__metric-grid--primary,
+  .et-tool--oscp .et-oscp__metric-grid--secondary,
+  .et-tool--oscp .et-oscp__field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .et-tool--oscp .et-oscp__shell {
+    width: min(100%, calc(100% - 16px));
+    margin: 8px auto 20px;
+  }
+
+  .et-tool--oscp .et-oscp__header,
+  .et-tool--oscp .et-oscp__visual-card,
+  .et-tool--oscp .et-oscp__result-card,
+  .et-tool--oscp .et-oscp__right-column > .et-oscp__card,
+  .et-tool--oscp .et-oscp__shell > .et-oscp__card:last-child {
+    padding: 16px;
+  }
+
+  .et-tool--oscp .et-oscp__card-header,
+  .et-tool--oscp .et-oscp__mini-header,
+  .et-tool--oscp .et-oscp__actions {
+    flex-direction: column;
+  }
+
+  .et-tool--oscp .et-oscp__diagram-frame {
+    min-height: 280px;
+  }
+}

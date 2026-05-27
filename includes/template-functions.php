@@ -7,9 +7,7 @@ declare(strict_types=1);
 
 namespace EngineeringTools;
 
-if (! defined('ABSPATH')) {
-    exit;
-}
+defined('ABSPATH') || exit;
 
 /**
  * @param array<string, mixed> $attrs

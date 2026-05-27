@@ -1,0 +1,540 @@
+.et-tool--bolt-capacity {
+  --et-bc-bg: #f5f7f6;
+  --et-bc-surface: rgba(255, 255, 255, 0.94);
+  --et-bc-surface-strong: #ffffff;
+  --et-bc-surface-soft: rgba(238, 245, 244, 0.95);
+  --et-bc-line: rgba(23, 48, 59, 0.12);
+  --et-bc-line-strong: rgba(21, 112, 104, 0.2);
+  --et-bc-text: #16303b;
+  --et-bc-muted: #647985;
+  --et-bc-accent: #157068;
+  --et-bc-accent-strong: #0f5b54;
+  --et-bc-accent-soft: rgba(21, 112, 104, 0.1);
+  --et-bc-blue: #1570ef;
+  --et-bc-blue-soft: rgba(21, 112, 239, 0.09);
+  --et-bc-shadow: 0 18px 40px rgba(22, 48, 59, 0.08);
+  --et-bc-radius-xl: 20px;
+  --et-bc-radius-lg: 18px;
+  --et-bc-radius-md: 16px;
+  --et-bc-radius-sm: 12px;
+  --et-bc-transition: 180ms ease;
+  color: var(--et-bc-text);
+}
+
+.et-tool--bolt-capacity,
+.et-tool--bolt-capacity * {
+  box-sizing: border-box;
+}
+
+.et-tool--bolt-capacity .et-bc-page {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(21, 112, 239, 0.05), transparent 32%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(245, 247, 246, 0.94)),
+    var(--et-bc-bg);
+}
+
+.et-tool--bolt-capacity .et-bc-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.et-tool--bolt-capacity .et-bc-page-kicker,
+.et-tool--bolt-capacity .et-bc-section-tag {
+  margin: 0 0 8px;
+  color: var(--et-bc-accent-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.et-tool--bolt-capacity .et-bc-page-title,
+.et-tool--bolt-capacity .et-bc-card h3,
+.et-tool--bolt-capacity .et-bc-property-panel h4 {
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.et-tool--bolt-capacity .et-bc-page-title {
+  font-size: clamp(1.9rem, 3vw, 2.7rem);
+}
+
+.et-tool--bolt-capacity .et-bc-main-grid,
+.et-tool--bolt-capacity .et-bc-left-column,
+.et-tool--bolt-capacity .et-bc-right-column,
+.et-tool--bolt-capacity .et-bc-properties-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.et-tool--bolt-capacity .et-bc-card {
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-xl);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 249, 0.98)),
+    var(--et-bc-surface);
+  box-shadow: var(--et-bc-shadow);
+  padding: 22px;
+}
+
+.et-tool--bolt-capacity .et-bc-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.et-tool--bolt-capacity .et-bc-card-intro,
+.et-tool--bolt-capacity .et-bc-equation-caption,
+.et-tool--bolt-capacity .et-bc-equation-collapsed-note,
+.et-tool--bolt-capacity .et-bc-empty-result p,
+.et-tool--bolt-capacity .et-bc-table-empty {
+  margin: 0;
+  color: var(--et-bc-muted);
+  line-height: 1.6;
+}
+
+.et-tool--bolt-capacity .et-bc-status-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--et-bc-line-strong);
+  border-radius: 999px;
+  background: var(--et-bc-accent-soft);
+  color: var(--et-bc-accent-strong);
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.et-tool--bolt-capacity .et-bc-status-chip--blue {
+  border-color: rgba(21, 112, 239, 0.16);
+  background: rgba(21, 112, 239, 0.1);
+  color: #0f5bd3;
+}
+
+.et-tool--bolt-capacity .et-bc-visual-frame {
+  margin-top: 16px;
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-lg);
+  background:
+    linear-gradient(180deg, rgba(248, 251, 250, 0.96), rgba(244, 249, 248, 0.96)),
+    var(--et-bc-bg);
+  overflow: hidden;
+}
+
+.et-tool--bolt-capacity .et-bc-visual-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.et-tool--bolt-capacity .et-bc-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.et-tool--bolt-capacity .et-bc-metric-card {
+  padding: 18px;
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-lg);
+  background: #ffffff;
+}
+
+.et-tool--bolt-capacity .et-bc-metric-card--primary {
+  border-color: rgba(21, 112, 239, 0.18);
+  background: linear-gradient(180deg, rgba(21, 112, 239, 0.1), rgba(21, 112, 239, 0.03));
+}
+
+.et-tool--bolt-capacity .et-bc-metric-card--secondary {
+  border-color: rgba(21, 112, 104, 0.18);
+  background: linear-gradient(180deg, rgba(21, 112, 104, 0.12), rgba(21, 112, 104, 0.03));
+}
+
+.et-tool--bolt-capacity .et-bc-metric-eyebrow,
+.et-tool--bolt-capacity .et-bc-support-label {
+  display: block;
+  color: var(--et-bc-muted);
+  font-size: 0.84rem;
+}
+
+.et-tool--bolt-capacity .et-bc-metric-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.et-tool--bolt-capacity .et-bc-metric-value {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.et-tool--bolt-capacity .et-bc-metric-unit {
+  color: var(--et-bc-muted);
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-bc-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.et-tool--bolt-capacity .et-bc-support-block,
+.et-tool--bolt-capacity .et-bc-property-panel {
+  padding: 16px;
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-lg);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.et-tool--bolt-capacity .et-bc-support-block strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--et-bc-text);
+}
+
+.et-tool--bolt-capacity .et-bc-empty-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  padding: 16px;
+  border: 1px dashed rgba(100, 121, 133, 0.26);
+  border-radius: var(--et-bc-radius-lg);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.et-tool--bolt-capacity .et-bc-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.et-tool--bolt-capacity .et-tool__field {
+  gap: 8px;
+}
+
+.et-tool--bolt-capacity .et-tool__label {
+  color: var(--et-bc-text);
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-tool__input-wrap {
+  min-height: 56px;
+  border-radius: var(--et-bc-radius-md);
+  border-color: var(--et-bc-line);
+  transition: border-color var(--et-bc-transition), box-shadow var(--et-bc-transition), transform var(--et-bc-transition);
+}
+
+.et-tool--bolt-capacity .et-tool__input-wrap:focus-within {
+  border-color: rgba(21, 112, 104, 0.32);
+  box-shadow: 0 0 0 4px rgba(21, 112, 104, 0.12);
+}
+
+.et-tool--bolt-capacity .et-tool__input-wrap.has-error {
+  border-color: rgba(198, 72, 72, 0.42);
+  box-shadow: 0 0 0 4px rgba(198, 72, 72, 0.08);
+}
+
+.et-tool--bolt-capacity .et-tool__input {
+  background: transparent;
+}
+
+.et-tool--bolt-capacity .et-tool__unit {
+  padding-right: 14px;
+  color: var(--et-bc-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-tool__error {
+  min-height: 18px;
+  color: #c64848;
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-block {
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--et-bc-accent-strong);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  transition: background-color var(--et-bc-transition);
+}
+
+.et-tool--bolt-capacity .et-bc-equation-toggle:hover {
+  background: rgba(21, 112, 104, 0.05);
+}
+
+.et-tool--bolt-capacity .et-bc-equation-toggle-icon {
+  font-size: 1.1rem;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-body {
+  padding: 0 18px 18px;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-body.is-collapsed {
+  display: none;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-formula {
+  padding: 14px 16px;
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-md);
+  background: var(--et-bc-surface-soft);
+  overflow-x: auto;
+}
+
+.et-tool--bolt-capacity .et-bc-equation-collapsed-note {
+  padding: 0 18px 16px;
+}
+
+.et-tool--bolt-capacity .et-bc-action-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.et-tool--bolt-capacity .et-bc-save-button,
+.et-tool--bolt-capacity .et-bc-export-button {
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--et-bc-transition), border-color var(--et-bc-transition), background-color var(--et-bc-transition), opacity var(--et-bc-transition);
+}
+
+.et-tool--bolt-capacity .et-bc-save-button {
+  background: linear-gradient(135deg, var(--et-bc-accent), var(--et-bc-accent-strong));
+  color: #ffffff;
+}
+
+.et-tool--bolt-capacity .et-bc-export-button {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(21, 112, 104, 0.16);
+  color: var(--et-bc-accent-strong);
+}
+
+.et-tool--bolt-capacity .et-bc-export-button--quiet {
+  min-height: 38px;
+  padding: 0 14px;
+}
+
+.et-tool--bolt-capacity .et-bc-save-button:hover,
+.et-tool--bolt-capacity .et-bc-export-button:hover {
+  transform: translateY(-1px);
+}
+
+.et-tool--bolt-capacity .et-bc-save-button:disabled,
+.et-tool--bolt-capacity .et-bc-export-button:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.et-tool--bolt-capacity .et-bc-properties-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--bolt-capacity .et-bc-property-panel h4 {
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
+.et-tool--bolt-capacity .et-bc-detail-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 9px;
+  margin-bottom: 9px;
+  border-bottom: 1px solid rgba(23, 48, 59, 0.08);
+  color: var(--et-bc-muted);
+  font-size: 0.92rem;
+}
+
+.et-tool--bolt-capacity .et-bc-detail-row:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.et-tool--bolt-capacity .et-bc-detail-row strong {
+  color: var(--et-bc-text);
+  text-align: right;
+}
+
+.et-tool--bolt-capacity .et-bc-table-shell {
+  overflow-x: auto;
+  border: 1px solid var(--et-bc-line);
+  border-radius: var(--et-bc-radius-lg);
+  background: #ffffff;
+}
+
+.et-tool--bolt-capacity .et-bc-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+
+.et-tool--bolt-capacity .et-bc-table th,
+.et-tool--bolt-capacity .et-bc-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--et-bc-line);
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+.et-tool--bolt-capacity .et-bc-table th {
+  background: rgba(21, 112, 104, 0.06);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.et-tool--bolt-capacity .et-bc-table-empty {
+  text-align: center;
+}
+
+.et-tool--bolt-capacity .et-bc-visual-svg text {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-axis {
+  fill: #607786;
+  font-size: 12px;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-note {
+  fill: #173543;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-dimension {
+  fill: var(--et-bc-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-force {
+  fill: var(--et-bc-blue);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-force--teal {
+  fill: var(--et-bc-accent);
+}
+
+.et-tool--bolt-capacity .et-bc-svg-badge {
+  fill: var(--et-bc-text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.et-tool--bolt-capacity .et-bc-svg-badge--accent {
+  fill: var(--et-bc-blue);
+}
+
+@media (min-width: 980px) {
+  .et-tool--bolt-capacity .et-bc-main-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+  }
+}
+
+@media (max-width: 920px) {
+  .et-tool--bolt-capacity .et-bc-field-grid,
+  .et-tool--bolt-capacity .et-bc-metrics-grid,
+  .et-tool--bolt-capacity .et-bc-support-grid,
+  .et-tool--bolt-capacity .et-bc-properties-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .et-tool--bolt-capacity .et-bc-page {
+    padding: 16px;
+  }
+
+  .et-tool--bolt-capacity .et-bc-card {
+    padding: 18px;
+  }
+
+  .et-tool--bolt-capacity .et-bc-card-heading,
+  .et-tool--bolt-capacity .et-bc-action-button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .et-tool--bolt-capacity .et-bc-page-title {
+    font-size: 1.7rem;
+  }
+}
+
+@media print {
+  .et-tool--bolt-capacity .et-bc-page {
+    display: block;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .et-tool--bolt-capacity .et-bc-card {
+    box-shadow: none;
+    break-inside: avoid;
+    margin-bottom: 12px;
+  }
+
+  .et-tool--bolt-capacity .et-bc-action-button-group,
+  .et-tool--bolt-capacity [data-et-action="clear-results"] {
+    display: none !important;
+  }
+
+  .et-tool--bolt-capacity .et-bc-equation-body.is-collapsed {
+    display: block;
+  }
+
+  .et-tool--bolt-capacity .et-bc-equation-collapsed-note {
+    display: none;
+  }
+}

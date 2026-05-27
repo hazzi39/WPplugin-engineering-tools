@@ -1,0 +1,19 @@
+{
+  "slug": "steel-development-length",
+  "shortcode": "steel_development_length",
+  "title": "Steel Development Length",
+  "category": "steel",
+  "description": "Native WordPress calculator for reinforcement development and lap splice length checks.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "local-storage",
+    "saved-results",
+    "responsive-ui",
+    "equation-rendering",
+    "word-export"
+  ]
+}

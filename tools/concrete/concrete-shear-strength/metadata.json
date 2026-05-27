@@ -1,0 +1,20 @@
+{
+  "slug": "concrete-shear-strength",
+  "shortcode": "concrete_shear_strength",
+  "title": "RC Shear Strength Calculator",
+  "category": "concrete",
+  "description": "Premium reinforced concrete shear strength calculator with live SVG visualisation, saved scenarios, and AS 5100.5-style design checks.",
+  "version": "0.1.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage",
+    "audit-trail"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "slug": "punching-shear-design",
+  "shortcode": "punching_shear_design",
+  "title": "Punching Shear Design",
+  "category": "concrete",
+  "description": "Premium internal slab support punching shear calculator to AS 5100.5 Clause 9.2 with live SVG visualisation and print-ready reporting.",
+  "version": "0.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage",
+    "word-export"
+  ]
+}

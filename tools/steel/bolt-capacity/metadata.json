@@ -1,0 +1,21 @@
+{
+  "slug": "bolt-capacity",
+  "shortcode": "bolt_capacity_calculator",
+  "title": "Bolt Capacity Calculator",
+  "category": "steel",
+  "description": "Premium structural bolt capacity and detailing calculator using catalogue-based shear, tension, and detailing data.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage",
+    "audit-trail",
+    "word-export"
+  ]
+}

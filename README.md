@@ -1,120 +1,74 @@
-# Engineering Tools Plugin
+# Engineering Tools
 
-This plugin scaffold is designed for a structural engineering tools website that needs:
+Private WordPress plugin for structural engineering calculators and utility tools.
 
-- native WordPress shortcodes
-- PMPro-friendly protected pages
-- modular calculators
-- conditional asset loading
-- reusable UI building blocks
-- low-dependency front-end code
+## Plugin Location
 
-## Current structure
+Deploy this folder to:
 
 ```text
-engineering-tools/
-|-- engineering-tools.php
-|-- assets/
-|   |-- css/
-|   |   `-- engineering-tools.css
-|   `-- js/
-|       `-- engineering-tools.js
-|-- includes/
-|   |-- class-engineering-tools-plugin.php
-|   |-- class-engineering-tools-tool-registry.php
-|   |-- class-engineering-tools-tool.php
-|   `-- template-functions.php
-`-- tools/
-    |-- concrete/
-    |   `-- rc-column-designer/
-    |       |-- app.js
-    |       |-- component.php
-    |       |-- metadata.json
-    |       `-- style.css
-    `-- timber/
-        `-- timber-column-calculator/
-            |-- app.js
-            |-- component.php
-            |-- metadata.json
-            `-- style.css
+wp-content/plugins/engineering_tools/
 ```
 
-## How it works
+Main plugin bootstrap:
+
+```text
+engineering_tools.php
+```
+
+## Structure
+
+```text
+engineering_tools/
+|-- engineering_tools.php
+|-- admin/
+|-- public/
+|-- includes/
+|-- assets/
+|   |-- css/
+|   |-- js/
+|-- tools/
+|   |-- concrete/
+|   |-- steel/
+|   `-- timber/
+|-- templates/
+|-- languages/
+|-- README.md
+|-- CHANGELOG.md
+`-- .gitignore
+```
+
+## How It Works
 
 1. The plugin scans `tools/*/*/metadata.json`.
 2. Each discovered tool is registered as a shortcode automatically.
-3. Shared assets are registered once.
-4. Tool-specific assets are only enqueued when the shortcode exists on the current singular page or when the shortcode renders.
-5. Tools that declare `equation-rendering` automatically load KaTeX only when required.
-6. Calculators render natively inside WordPress content, so PMPro restrictions flow through the protected page automatically.
+3. Shared assets are registered once and tool assets are enqueued only when needed.
+4. Tool templates render through PHP components with a sanitized context array.
+5. Optional KaTeX and Word export libraries are only loaded for tools that declare those supports.
 
-## Current shortcodes
+## Development Workflow
 
-```text
-[f14_timber_column_calculator]
-[rc_column_designer]
-```
+1. Make changes locally inside the `engineering_tools/` folder.
+2. Commit the plugin folder to a private GitHub repository.
+3. Deploy the folder contents to `wp-content/plugins/engineering_tools/`.
+4. Activate or update the plugin in WordPress Admin.
 
-## Shared helper layer
+## Installation
 
-`includes/template-functions.php` now provides reusable rendering helpers for:
+1. Copy the `engineering_tools/` folder into `wp-content/plugins/`.
+2. In WordPress Admin, go to `Plugins`.
+3. Activate `Engineering Tools`.
 
-- number input fields
-- select fields
-- metric cards
-- status boxes
-- result tables
+## Deployment To Hostinger
 
-This reduces repeated calculator markup and gives future tools a more consistent implementation path.
+1. In your private repo, keep the plugin root as `engineering_tools/`.
+2. Upload the folder to `public_html/wp-content/plugins/engineering_tools/`.
+3. Replace the existing plugin files carefully, or remove the old hyphenated plugin folder after confirming the new plugin is active.
+4. Clear any caching and re-test the tool pages.
 
-## Adding a new calculator
+## Notes
 
-Create a new folder like:
-
-```text
-tools/
-`-- steel/
-    `-- weld-group/
-        |-- component.php
-        |-- style.css
-        |-- app.js
-        `-- metadata.json
-```
-
-Example `metadata.json`:
-
-```json
-{
-  "slug": "weld-group",
-  "shortcode": "weld_group_calculator",
-  "title": "Weld Group Calculator",
-  "category": "steel",
-  "description": "Weld group capacity and eccentric load checks.",
-  "version": "1.0.0",
-  "assets": {
-    "style": "style.css",
-    "script": "app.js"
-  },
-  "supports": ["saved-results", "equation-rendering", "audit-trail"]
-}
-```
-
-## Integration notes
-
-- Keep calculator-specific CSS inside each tool folder.
-- Use shared UI helpers wherever possible instead of duplicating field and table markup.
-- Keep tool JavaScript vanilla and scoped to the calculator root element.
-- Escape output in `component.php` and sanitize any future server-side settings before storage.
-- Prefer data attributes and root-scoped selectors for multi-tool compatibility on larger WordPress pages.
-
-## Current status
-
-1. The timber column calculator is fully modular and uses the shared helper layer.
-2. The RC column designer is now migrated into `tools/concrete/rc-column-designer/` as a native shortcode tool.
-3. Shared PHP helper functions now cover reusable field, metric, status, and table rendering.
-
-## Recommended next steps
-
-1. Refactor the RC column component further so more of its repeated field groups are generated from helper-driven arrays.
-2. Add optional PMPro-aware teaser messaging for locked tool landing pages if you want preview content outside protected posts.
-3. Add export modules under `includes/` for PDF, print, audit trail, and saved sessions.
+- Keep shortcode names stable to avoid breaking existing WordPress pages.
+- Keep tool-specific CSS and JS inside each tool folder unless there is a clear reason to extract shared logic.
+- Sanitize shortcode attributes and escape all rendered output.
+- Review generated engineering reports before issue to clients or construction.
