@@ -1,0 +1,589 @@
+.et-tool--concrete-shear-strength {
+  --et-css-bg: #f5f7f6;
+  --et-css-surface: rgba(255, 255, 255, 0.97);
+  --et-css-surface-soft: #f8fbff;
+  --et-css-text: #163047;
+  --et-css-muted: #667b92;
+  --et-css-accent: #2563eb;
+  --et-css-accent-strong: #1d4ed8;
+  --et-css-accent-soft: rgba(37, 99, 235, 0.1);
+  --et-css-teal: #0f9f9b;
+  --et-css-teal-soft: rgba(15, 159, 155, 0.1);
+  --et-css-line: rgba(22, 48, 71, 0.1);
+  --et-css-line-strong: rgba(22, 48, 71, 0.18);
+  --et-css-success: #1c7a52;
+  --et-css-warning: #a46c16;
+  --et-css-danger: #b54949;
+  --et-css-shadow-soft: 0 14px 32px rgba(22, 48, 71, 0.08);
+  --et-css-shadow-float: 0 24px 48px rgba(22, 48, 71, 0.12);
+  --et-css-radius-xl: 20px;
+  --et-css-radius-lg: 18px;
+  --et-css-radius-md: 16px;
+  --et-css-radius-sm: 12px;
+  --et-css-transition: 200ms ease;
+  margin: 0;
+  color: var(--et-css-text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.09), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(15, 159, 155, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 251, 0.98)),
+    var(--et-css-bg);
+}
+
+.et-tool--concrete-shear-strength *,
+.et-tool--concrete-shear-strength *::before,
+.et-tool--concrete-shear-strength *::after {
+  box-sizing: border-box;
+}
+
+.et-tool--concrete-shear-strength button,
+.et-tool--concrete-shear-strength input {
+  font: inherit;
+}
+
+.et-tool--concrete-shear-strength .et-css__shell {
+  width: min(100%, calc(100% - 24px));
+  margin: 12px auto 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--concrete-shear-strength .et-css__card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-xl);
+  background: var(--et-css-surface);
+  box-shadow: var(--et-css-shadow-soft);
+}
+
+.et-tool--concrete-shear-strength .et-css__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 44%);
+  pointer-events: none;
+}
+
+.et-tool--concrete-shear-strength .et-css__header,
+.et-tool--concrete-shear-strength .et-css__visual-card,
+.et-tool--concrete-shear-strength .et-css__result-card,
+.et-tool--concrete-shear-strength .et-css__right-column > .et-css__card,
+.et-tool--concrete-shear-strength .et-css__shell > .et-css__card:last-child {
+  padding: 20px;
+}
+
+.et-tool--concrete-shear-strength .et-css__header,
+.et-tool--concrete-shear-strength .et-css__main-grid,
+.et-tool--concrete-shear-strength .et-css__left-column,
+.et-tool--concrete-shear-strength .et-css__right-column,
+.et-tool--concrete-shear-strength .et-css__field-grid,
+.et-tool--concrete-shear-strength .et-css__metric-grid,
+.et-tool--concrete-shear-strength .et-css__group-stack,
+.et-tool--concrete-shear-strength .et-css__check-list {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--concrete-shear-strength .et-css__header {
+  gap: 10px;
+}
+
+.et-tool--concrete-shear-strength .et-css__eyebrow,
+.et-tool--concrete-shear-strength .et-css__card-kicker {
+  margin: 0 0 8px;
+  color: var(--et-css-accent-strong);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.et-tool--concrete-shear-strength .et-css__title,
+.et-tool--concrete-shear-strength .et-css__card-header h3,
+.et-tool--concrete-shear-strength .et-css__mini-header h4,
+.et-tool--concrete-shear-strength .et-css__notice-panel h4,
+.et-tool--concrete-shear-strength p {
+  margin: 0;
+}
+
+.et-tool--concrete-shear-strength .et-css__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.et-tool--concrete-shear-strength .et-css__lead {
+  max-width: 72ch;
+  color: var(--et-css-muted);
+  line-height: 1.6;
+}
+
+.et-tool--concrete-shear-strength .et-css__main-grid {
+  grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
+}
+
+.et-tool--concrete-shear-strength .et-css__left-column,
+.et-tool--concrete-shear-strength .et-css__right-column {
+  align-content: start;
+}
+
+.et-tool--concrete-shear-strength .et-css__card-header,
+.et-tool--concrete-shear-strength .et-css__mini-header,
+.et-tool--concrete-shear-strength .et-css__result-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.et-tool--concrete-shear-strength .et-css__card-header {
+  margin-bottom: 16px;
+}
+
+.et-tool--concrete-shear-strength .et-css__card-header h3 {
+  font-size: clamp(1.08rem, 2vw, 1.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.et-tool--concrete-shear-strength .et-css__status-chip,
+.et-tool--concrete-shear-strength .et-css__status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 999px;
+  background: var(--et-css-accent-soft);
+  color: var(--et-css-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.et-tool--concrete-shear-strength .et-css__status-pill[data-tone="pass"],
+.et-tool--concrete-shear-strength .et-css__status-chip[data-tone="pass"] {
+  background: rgba(28, 122, 82, 0.11);
+  border-color: rgba(28, 122, 82, 0.18);
+  color: var(--et-css-success);
+}
+
+.et-tool--concrete-shear-strength .et-css__status-pill[data-tone="fail"],
+.et-tool--concrete-shear-strength .et-css__status-chip[data-tone="fail"] {
+  background: rgba(181, 73, 73, 0.12);
+  border-color: rgba(181, 73, 73, 0.2);
+  color: var(--et-css-danger);
+}
+
+.et-tool--concrete-shear-strength .et-css__status-pill[data-tone="warn"],
+.et-tool--concrete-shear-strength .et-css__status-chip[data-tone="warn"] {
+  background: rgba(164, 108, 22, 0.12);
+  border-color: rgba(164, 108, 22, 0.2);
+  color: var(--et-css-warning);
+}
+
+.et-tool--concrete-shear-strength .et-css__visual-frame {
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 253, 0.98)),
+    linear-gradient(90deg, transparent 0, transparent 23px, rgba(37, 99, 235, 0.04) 24px),
+    linear-gradient(transparent 0, transparent 23px, rgba(37, 99, 235, 0.04) 24px);
+  background-size: auto, 24px 24px, 24px 24px;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-card {
+  padding: 20px;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-lg);
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-card[data-tone="pass"] {
+  border-color: rgba(28, 122, 82, 0.2);
+  background: linear-gradient(145deg, rgba(28, 122, 82, 0.11), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-card[data-tone="fail"] {
+  border-color: rgba(181, 73, 73, 0.2);
+  background: linear-gradient(145deg, rgba(181, 73, 73, 0.12), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-label,
+.et-tool--concrete-shear-strength .et-css__metric-card span,
+.et-tool--concrete-shear-strength .et-css__equation-title,
+.et-tool--concrete-shear-strength .et-css__table th,
+.et-tool--concrete-shear-strength .et-css__check-item p {
+  color: var(--et-css-muted);
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-value {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.et-tool--concrete-shear-strength .et-css__hero-note {
+  margin-top: 10px;
+  color: var(--et-css-muted);
+  line-height: 1.55;
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-grid--primary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-grid--secondary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-card,
+.et-tool--concrete-shear-strength .et-css__input-group,
+.et-tool--concrete-shear-strength .et-css__equation-block,
+.et-tool--concrete-shear-strength .et-css__check-item,
+.et-tool--concrete-shear-strength .et-css__notice-panel {
+  padding: 16px;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 253, 0.98));
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-card small {
+  display: block;
+  margin-top: 8px;
+  color: var(--et-css-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.et-tool--concrete-shear-strength .et-css__metric-card--accent {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--concrete-shear-strength .et-css__button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--et-css-transition), box-shadow var(--et-css-transition), opacity var(--et-css-transition);
+}
+
+.et-tool--concrete-shear-strength .et-css__button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.et-tool--concrete-shear-strength .et-css__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.et-tool--concrete-shear-strength .et-css__button--primary {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, var(--et-css-accent), var(--et-css-accent-strong));
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+}
+
+.et-tool--concrete-shear-strength .et-css__button--ghost {
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--et-css-accent-strong);
+}
+
+.et-tool--concrete-shear-strength .et-css__field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--concrete-shear-strength .et-css__field {
+  display: grid;
+  gap: 8px;
+}
+
+.et-tool--concrete-shear-strength .et-css__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.et-tool--concrete-shear-strength .et-css__control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-md);
+  background: rgba(255, 255, 255, 0.94);
+  transition: border-color var(--et-css-transition), box-shadow var(--et-css-transition), transform var(--et-css-transition);
+}
+
+.et-tool--concrete-shear-strength .et-css__control:focus-within {
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.et-tool--concrete-shear-strength .et-css__control.has-error {
+  border-color: rgba(181, 73, 73, 0.4);
+  box-shadow: 0 0 0 4px rgba(181, 73, 73, 0.08);
+}
+
+.et-tool--concrete-shear-strength .et-css__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--et-css-text);
+}
+
+.et-tool--concrete-shear-strength .et-css__unit {
+  color: var(--et-css-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.et-tool--concrete-shear-strength .et-css__error {
+  min-height: 18px;
+  color: var(--et-css-danger);
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.et-tool--concrete-shear-strength .et-css__mini-header {
+  margin-bottom: 14px;
+}
+
+.et-tool--concrete-shear-strength .et-css__mini-header h4 {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.et-tool--concrete-shear-strength .et-css__mini-header span {
+  color: var(--et-css-muted);
+  font-size: 0.82rem;
+}
+
+.et-tool--concrete-shear-strength .et-css__notice-panel {
+  margin-top: 18px;
+}
+
+.et-tool--concrete-shear-strength .et-css__notice-panel h4 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.et-tool--concrete-shear-strength .et-css__check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.et-tool--concrete-shear-strength .et-css__check-item strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.et-tool--concrete-shear-strength .et-css__check-item--pass {
+  border-color: rgba(28, 122, 82, 0.22);
+  background: rgba(28, 122, 82, 0.1);
+}
+
+.et-tool--concrete-shear-strength .et-css__check-item--warn {
+  border-color: rgba(164, 108, 22, 0.22);
+  background: rgba(164, 108, 22, 0.1);
+}
+
+.et-tool--concrete-shear-strength .et-css__check-item--fail {
+  border-color: rgba(181, 73, 73, 0.22);
+  background: rgba(181, 73, 73, 0.1);
+}
+
+.et-tool--concrete-shear-strength .et-css__collapse {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--et-css-accent-strong);
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.et-tool--concrete-shear-strength .et-css__collapse strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1rem;
+  color: var(--et-css-text);
+}
+
+.et-tool--concrete-shear-strength .et-css__collapse-panel {
+  margin-top: 16px;
+}
+
+.et-tool--concrete-shear-strength .et-css__collapse-panel.is-collapsed {
+  display: none;
+}
+
+.et-tool--concrete-shear-strength .et-css__math {
+  overflow-x: auto;
+}
+
+.et-tool--concrete-shear-strength .et-css__math .katex-display {
+  margin: 0;
+}
+
+.et-tool--concrete-shear-strength .et-css__table-wrap {
+  overflow: auto;
+  border: 1px solid var(--et-css-line);
+  border-radius: var(--et-css-radius-lg);
+}
+
+.et-tool--concrete-shear-strength .et-css__table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.et-tool--concrete-shear-strength .et-css__table th,
+.et-tool--concrete-shear-strength .et-css__table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--et-css-line);
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.et-tool--concrete-shear-strength .et-css__table thead {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.et-tool--concrete-shear-strength .et-css__table th {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.et-tool--concrete-shear-strength .et-css__table tbody tr:nth-child(even) {
+  background: rgba(22, 48, 71, 0.02);
+}
+
+.et-tool--concrete-shear-strength .et-css__empty-row {
+  color: var(--et-css-muted);
+  text-align: center;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-label {
+  fill: #45606f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-caption {
+  fill: #618092;
+  font-size: 12px;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-axis {
+  stroke: rgba(97, 128, 146, 0.5);
+  stroke-dasharray: 8 8;
+  stroke-width: 1.5;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-outline {
+  fill: rgba(222, 236, 244, 0.85);
+  stroke: #2f5d7d;
+  stroke-width: 3;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-stirrup {
+  fill: none;
+  stroke: #1778d6;
+  stroke-width: 5;
+  stroke-linejoin: round;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-arrow {
+  stroke: #1778d6;
+  stroke-width: 3.5;
+  marker-end: url(#et-css-arrow-end);
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-bar {
+  fill: #1c3d58;
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-dim {
+  stroke: #7096af;
+  stroke-width: 2;
+  marker-start: url(#et-css-arrow-start);
+  marker-end: url(#et-css-arrow-end);
+}
+
+.et-tool--concrete-shear-strength .et-css__diagram-empty {
+  fill: var(--et-css-muted);
+  font-size: 15px;
+}
+
+@media (max-width: 1200px) {
+  .et-tool--concrete-shear-strength .et-css__main-grid,
+  .et-tool--concrete-shear-strength .et-css__metric-grid--primary,
+  .et-tool--concrete-shear-strength .et-css__metric-grid--secondary,
+  .et-tool--concrete-shear-strength .et-css__field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .et-tool--concrete-shear-strength .et-css__shell {
+    width: min(100%, calc(100% - 16px));
+    margin: 8px auto 20px;
+  }
+
+  .et-tool--concrete-shear-strength .et-css__header,
+  .et-tool--concrete-shear-strength .et-css__visual-card,
+  .et-tool--concrete-shear-strength .et-css__result-card,
+  .et-tool--concrete-shear-strength .et-css__right-column > .et-css__card,
+  .et-tool--concrete-shear-strength .et-css__shell > .et-css__card:last-child {
+    padding: 16px;
+  }
+
+  .et-tool--concrete-shear-strength .et-css__card-header,
+  .et-tool--concrete-shear-strength .et-css__mini-header,
+  .et-tool--concrete-shear-strength .et-css__result-actions {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,564 @@
+.et-tool--steel-development-length-premium {
+  --sdl-bg: #f5f7f6;
+  --sdl-surface: rgba(255, 255, 255, 0.96);
+  --sdl-surface-soft: #f9fbfd;
+  --sdl-text: #17312d;
+  --sdl-muted: #667b82;
+  --sdl-accent: #2563eb;
+  --sdl-accent-strong: #1d4ed8;
+  --sdl-accent-soft: rgba(37, 99, 235, 0.1);
+  --sdl-accent-line: rgba(37, 99, 235, 0.22);
+  --sdl-line: rgba(23, 49, 45, 0.1);
+  --sdl-line-strong: rgba(23, 49, 45, 0.16);
+  --sdl-success: #1f8a5b;
+  --sdl-warning: #a46c16;
+  --sdl-danger: #c74d4d;
+  --sdl-shadow-soft: 0 12px 30px rgba(23, 49, 45, 0.08);
+  --sdl-shadow-float: 0 18px 36px rgba(23, 49, 45, 0.12);
+  --sdl-radius-xl: 20px;
+  --sdl-radius-lg: 18px;
+  --sdl-radius-md: 16px;
+  --sdl-radius-sm: 12px;
+  --sdl-transition: 200ms ease;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--sdl-text);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 247, 246, 0.98)),
+    var(--sdl-bg);
+}
+
+.et-tool--steel-development-length-premium *,
+.et-tool--steel-development-length-premium *::before,
+.et-tool--steel-development-length-premium *::after {
+  box-sizing: border-box;
+}
+
+.et-tool--steel-development-length-premium button,
+.et-tool--steel-development-length-premium input,
+.et-tool--steel-development-length-premium select {
+  font: inherit;
+}
+
+.et-tool--steel-development-length-premium .sdl-app-shell {
+  width: min(100%, calc(100% - 24px));
+  margin: 12px auto 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-development-length-premium .sdl-surface-card {
+  position: relative;
+  border: 1px solid var(--sdl-line);
+  border-radius: var(--sdl-radius-xl);
+  background: var(--sdl-surface);
+  box-shadow: var(--sdl-shadow-soft);
+  overflow: hidden;
+}
+
+.et-tool--steel-development-length-premium .sdl-surface-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 42%);
+  pointer-events: none;
+}
+
+.et-tool--steel-development-length-premium .sdl-page-header,
+.et-tool--steel-development-length-premium .sdl-visual-card,
+.et-tool--steel-development-length-premium .sdl-result-card,
+.et-tool--steel-development-length-premium .sdl-right-column > .sdl-surface-card,
+.et-tool--steel-development-length-premium .sdl-app-shell > .sdl-surface-card:last-child {
+  padding: 20px;
+}
+
+.et-tool--steel-development-length-premium .sdl-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.et-tool--steel-development-length-premium .sdl-eyebrow {
+  margin: 0 0 8px;
+  color: var(--sdl-accent-strong);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.et-tool--steel-development-length-premium .sdl-page-title,
+.et-tool--steel-development-length-premium .sdl-card-header h3,
+.et-tool--steel-development-length-premium .sdl-panel-header h4,
+.et-tool--steel-development-length-premium p {
+  margin: 0;
+}
+
+.et-tool--steel-development-length-premium .sdl-page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.et-tool--steel-development-length-premium .sdl-page-subtitle {
+  max-width: 70ch;
+  color: var(--sdl-muted);
+  line-height: 1.6;
+}
+
+.et-tool--steel-development-length-premium .sdl-main-grid,
+.et-tool--steel-development-length-premium .sdl-left-column,
+.et-tool--steel-development-length-premium .sdl-right-column,
+.et-tool--steel-development-length-premium .sdl-input-grid,
+.et-tool--steel-development-length-premium .sdl-metric-grid,
+.et-tool--steel-development-length-premium .sdl-detail-grid,
+.et-tool--steel-development-length-premium .sdl-toggle-list,
+.et-tool--steel-development-length-premium .sdl-compliance-list,
+.et-tool--steel-development-length-premium .sdl-symbol-grid,
+.et-tool--steel-development-length-premium .sdl-summary-chip-grid,
+.et-tool--steel-development-length-premium .sdl-visual-caption-row {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-development-length-premium .sdl-main-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+}
+
+.et-tool--steel-development-length-premium .sdl-left-column,
+.et-tool--steel-development-length-premium .sdl-right-column {
+  align-content: start;
+}
+
+.et-tool--steel-development-length-premium .sdl-card-header,
+.et-tool--steel-development-length-premium .sdl-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.et-tool--steel-development-length-premium .sdl-card-header h3 {
+  font-size: clamp(1.08rem, 2vw, 1.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.et-tool--steel-development-length-premium .sdl-card-header p,
+.et-tool--steel-development-length-premium .sdl-supporting-note,
+.et-tool--steel-development-length-premium .sdl-collapse-summary {
+  color: var(--sdl-muted);
+  line-height: 1.55;
+}
+
+.et-tool--steel-development-length-premium .sdl-status-pill,
+.et-tool--steel-development-length-premium .sdl-collapse-indicator,
+.et-tool--steel-development-length-premium .sdl-summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--sdl-accent-line);
+  background: var(--sdl-accent-soft);
+  color: var(--sdl-accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.et-tool--steel-development-length-premium .sdl-visual-frame {
+  min-height: 320px;
+  border-radius: var(--sdl-radius-lg);
+  border: 1px solid var(--sdl-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 249, 0.98)),
+    linear-gradient(90deg, transparent 0, transparent 39px, rgba(37, 99, 235, 0.045) 40px),
+    linear-gradient(transparent 0, transparent 39px, rgba(37, 99, 235, 0.045) 40px);
+  background-size: auto, 40px 40px, 40px 40px;
+  padding: 8px;
+}
+
+.et-tool--steel-development-length-premium .sdl-visual-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.et-tool--steel-development-length-premium .sdl-visual-caption-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.et-tool--steel-development-length-premium .sdl-visual-caption-row div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--sdl-radius-md);
+  border: 1px solid var(--sdl-line);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.et-tool--steel-development-length-premium .sdl-visual-caption-row span,
+.et-tool--steel-development-length-premium .sdl-metric-card span,
+.et-tool--steel-development-length-premium .sdl-detail-row span,
+.et-tool--steel-development-length-premium .sdl-symbol-row span,
+.et-tool--steel-development-length-premium .sdl-equation-title {
+  color: var(--sdl-muted);
+}
+
+.et-tool--steel-development-length-premium .sdl-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.et-tool--steel-development-length-premium .sdl-button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--sdl-transition), box-shadow var(--sdl-transition), opacity var(--sdl-transition);
+}
+
+.et-tool--steel-development-length-premium .sdl-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.et-tool--steel-development-length-premium .sdl-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.et-tool--steel-development-length-premium .sdl-button--primary {
+  border: 0;
+  background: linear-gradient(135deg, var(--sdl-accent), var(--sdl-accent-strong));
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+}
+
+.et-tool--steel-development-length-premium .sdl-button--ghost {
+  border: 1px solid var(--sdl-accent-line);
+  background: rgba(255, 255, 255, 0.98);
+  color: var(--sdl-accent-strong);
+}
+
+.et-tool--steel-development-length-premium .sdl-metric-grid--primary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 16px;
+}
+
+.et-tool--steel-development-length-premium .sdl-metric-card,
+.et-tool--steel-development-length-premium .sdl-panel,
+.et-tool--steel-development-length-premium .sdl-equation-block {
+  padding: 16px;
+  border: 1px solid var(--sdl-line);
+  border-radius: var(--sdl-radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 249, 0.98));
+}
+
+.et-tool--steel-development-length-premium .sdl-metric-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(1.45rem, 4vw, 2.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.et-tool--steel-development-length-premium .sdl-metric-card small {
+  display: block;
+  margin-top: 8px;
+  color: var(--sdl-muted);
+  font-size: 0.82rem;
+}
+
+.et-tool--steel-development-length-premium .sdl-metric-card--highlight {
+  border-color: var(--sdl-accent-line);
+  background: linear-gradient(155deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.98));
+}
+
+.et-tool--steel-development-length-premium .sdl-detail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.et-tool--steel-development-length-premium .sdl-detail-row,
+.et-tool--steel-development-length-premium .sdl-symbol-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--sdl-line);
+}
+
+.et-tool--steel-development-length-premium .sdl-detail-row:last-child,
+.et-tool--steel-development-length-premium .sdl-symbol-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.et-tool--steel-development-length-premium .sdl-detail-row strong,
+.et-tool--steel-development-length-premium .sdl-symbol-row p {
+  margin: 0;
+  text-align: right;
+}
+
+.et-tool--steel-development-length-premium .sdl-compliance-item {
+  padding: 14px 16px;
+  border-radius: var(--sdl-radius-md);
+  border: 1px solid var(--sdl-accent-line);
+  background: var(--sdl-accent-soft);
+}
+
+.et-tool--steel-development-length-premium .sdl-compliance-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.et-tool--steel-development-length-premium .sdl-compliance-item p {
+  margin: 0;
+}
+
+.et-tool--steel-development-length-premium .sdl-compliance-item[data-state="warning"] {
+  border-color: rgba(164, 108, 22, 0.22);
+  background: rgba(164, 108, 22, 0.12);
+}
+
+.et-tool--steel-development-length-premium .sdl-compliance-item[data-state="danger"] {
+  border-color: rgba(199, 77, 77, 0.24);
+  background: rgba(199, 77, 77, 0.12);
+}
+
+.et-tool--steel-development-length-premium .sdl-input-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--steel-development-length-premium .sdl-field {
+  display: grid;
+  gap: 8px;
+}
+
+.et-tool--steel-development-length-premium .sdl-field-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.et-tool--steel-development-length-premium .sdl-field-control,
+.et-tool--steel-development-length-premium .sdl-select-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid var(--sdl-line);
+  border-radius: var(--sdl-radius-md);
+  background: rgba(255, 255, 255, 0.94);
+  transition: border-color var(--sdl-transition), box-shadow var(--sdl-transition), transform var(--sdl-transition);
+}
+
+.et-tool--steel-development-length-premium .sdl-field-control:focus-within,
+.et-tool--steel-development-length-premium .sdl-select-control:focus-within {
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
+}
+
+.et-tool--steel-development-length-premium .sdl-field-control.has-error,
+.et-tool--steel-development-length-premium .sdl-select-control.has-error {
+  border-color: rgba(199, 77, 77, 0.44);
+  box-shadow: 0 0 0 4px rgba(199, 77, 77, 0.08);
+}
+
+.et-tool--steel-development-length-premium .sdl-field-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--sdl-text);
+}
+
+.et-tool--steel-development-length-premium .sdl-field-unit {
+  color: var(--sdl-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.et-tool--steel-development-length-premium .sdl-field-message {
+  min-height: 18px;
+  color: var(--sdl-danger);
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-list {
+  margin-top: 12px;
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--sdl-line);
+  border-radius: var(--sdl-radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 249, 0.98));
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-row span {
+  display: grid;
+  gap: 4px;
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-row small {
+  color: var(--sdl-muted);
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-switch {
+  display: inline-flex;
+  align-items: center;
+}
+
+.et-tool--steel-development-length-premium .sdl-toggle-switch input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--sdl-accent);
+}
+
+.et-tool--steel-development-length-premium .sdl-collapsible-header {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.et-tool--steel-development-length-premium .sdl-collapsible-body {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--steel-development-length-premium .sdl-collapsible-body.is-collapsed {
+  display: none;
+}
+
+.et-tool--steel-development-length-premium .sdl-summary-chip-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.et-tool--steel-development-length-premium .sdl-summary-chip {
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 0;
+  padding: 14px;
+  border-radius: var(--sdl-radius-lg);
+}
+
+.et-tool--steel-development-length-premium .sdl-summary-chip span {
+  font-size: 0.78rem;
+}
+
+.et-tool--steel-development-length-premium .sdl-summary-chip strong {
+  font-size: 0.94rem;
+}
+
+.et-tool--steel-development-length-premium .sdl-symbol-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.et-tool--steel-development-length-premium .sdl-symbol-row p {
+  max-width: 320px;
+}
+
+.et-tool--steel-development-length-premium .sdl-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--sdl-line);
+  border-radius: var(--sdl-radius-lg);
+}
+
+.et-tool--steel-development-length-premium .sdl-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.et-tool--steel-development-length-premium .sdl-table thead {
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.et-tool--steel-development-length-premium .sdl-table th,
+.et-tool--steel-development-length-premium .sdl-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--sdl-line);
+  font-size: 0.9rem;
+}
+
+.et-tool--steel-development-length-premium .sdl-table tbody tr:nth-child(even) {
+  background: rgba(23, 49, 45, 0.02);
+}
+
+.et-tool--steel-development-length-premium .sdl-empty-row {
+  color: var(--sdl-muted);
+  text-align: center;
+}
+
+.et-tool--steel-development-length-premium .sdl-table-emphasis {
+  color: var(--sdl-accent-strong);
+  font-weight: 700;
+}
+
+.et-tool--steel-development-length-premium .sdl-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border-radius: var(--sdl-radius-lg);
+  border: 1px dashed var(--sdl-accent-line);
+  color: var(--sdl-muted);
+}
+
+.et-tool--steel-development-length-premium .sdl-math-formula {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.et-tool--steel-development-length-premium .sdl-math-formula .katex-display {
+  margin: 0;
+}
+
+@media (max-width: 1200px) {
+  .et-tool--steel-development-length-premium .sdl-main-grid,
+  .et-tool--steel-development-length-premium .sdl-input-grid,
+  .et-tool--steel-development-length-premium .sdl-metric-grid--primary,
+  .et-tool--steel-development-length-premium .sdl-detail-grid,
+  .et-tool--steel-development-length-premium .sdl-symbol-grid,
+  .et-tool--steel-development-length-premium .sdl-summary-chip-grid,
+  .et-tool--steel-development-length-premium .sdl-visual-caption-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .et-tool--steel-development-length-premium .sdl-app-shell {
+    width: min(100%, calc(100% - 16px));
+    margin: 8px auto 20px;
+  }
+
+  .et-tool--steel-development-length-premium .sdl-page-header,
+  .et-tool--steel-development-length-premium .sdl-visual-card,
+  .et-tool--steel-development-length-premium .sdl-result-card,
+  .et-tool--steel-development-length-premium .sdl-right-column > .sdl-surface-card,
+  .et-tool--steel-development-length-premium .sdl-app-shell > .sdl-surface-card:last-child {
+    padding: 16px;
+  }
+
+  .et-tool--steel-development-length-premium .sdl-card-header {
+    flex-direction: column;
+  }
+}

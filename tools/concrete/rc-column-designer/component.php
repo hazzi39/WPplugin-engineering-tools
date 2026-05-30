@@ -63,7 +63,7 @@ $reportSettings = shortcode_atts(
             </div>
             <div class="result-actions">
               <button id="save-result" class="primary-button" type="button">Save Result</button>
-              <button id="export-pdf" class="secondary-button" type="button">Export PDF</button>
+              <button id="export-pdf" class="secondary-button" type="button">Export Word Report</button>
             </div>
           </div>
 
@@ -258,6 +258,5 @@ $reportSettings = shortcode_atts(
       </div>
     </section>
   </div>
-  <div id="pdf-report" class="pdf-report" aria-hidden="true"></div>
 </section>
 

@@ -31,6 +31,12 @@ engineering-tools/
     |       |-- component.php
     |       |-- metadata.json
     |       `-- style.css
+    |-- steel/
+    |   `-- steel-development-length/
+    |       |-- app.js
+    |       |-- component.php
+    |       |-- metadata.json
+    |       `-- style.css
     `-- timber/
         `-- timber-column-calculator/
             |-- app.js
@@ -53,6 +59,8 @@ engineering-tools/
 ```text
 [f14_timber_column_calculator]
 [rc_column_designer]
+[rc_moment_capacity]
+[steel_development_length]
 ```
 
 ## Shared helper layer
@@ -112,6 +120,8 @@ Example `metadata.json`:
 1. The timber column calculator is fully modular and uses the shared helper layer.
 2. The RC column designer is now migrated into `tools/concrete/rc-column-designer/` as a native shortcode tool.
 3. Shared PHP helper functions now cover reusable field, metric, status, and table rendering.
+4. A steel development length calculator is now available under `tools/steel/steel-development-length/` with development, lap splice, bundle, and hook checks.
+5. A premium RC moment capacity calculator is now available under `tools/concrete/rc-moment-capacity/` with live section visualisation, saved snapshots, and KaTeX equation rendering.
 
 ## Recommended next steps
 

@@ -86,10 +86,10 @@ final class Plugin
         );
 
         wp_register_script(
-            'engineering-tools-html2pdf',
-            'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
+            'engineering-tools-docx',
+            'https://cdn.jsdelivr.net/npm/docx@9.6.1/dist/index.iife.js',
             array(),
-            '0.10.1',
+            '9.6.1',
             true
         );
 
@@ -178,8 +178,8 @@ final class Plugin
             wp_enqueue_script('engineering-tools-katex');
         }
 
-        if ($tool->hasSupport('pdf-export')) {
-            wp_enqueue_script('engineering-tools-html2pdf');
+        if ($tool->hasSupport('word-export')) {
+            wp_enqueue_script('engineering-tools-docx');
         }
 
         wp_enqueue_script('engineering-tools-shared');
@@ -210,8 +210,8 @@ final class Plugin
             $dependencies[] = 'engineering-tools-katex';
         }
 
-        if ($tool->hasSupport('pdf-export')) {
-            $dependencies[] = 'engineering-tools-html2pdf';
+        if ($tool->hasSupport('word-export')) {
+            $dependencies[] = 'engineering-tools-docx';
         }
 
         return $dependencies;

@@ -13,7 +13,7 @@
     "saved-results",
     "svg-output",
     "equation-rendering",
-    "pdf-export",
+    "word-export",
     "responsive-ui",
     "local-storage"
   ]
