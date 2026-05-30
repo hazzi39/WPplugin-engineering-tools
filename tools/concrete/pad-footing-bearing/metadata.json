@@ -1,0 +1,21 @@
+{
+  "slug": "pad-footing-bearing",
+  "shortcode": "pad_footing_bearing",
+  "title": "Pad Footing Bearing Pressure",
+  "category": "concrete",
+  "description": "Premium eccentric pad footing bearing pressure calculator with live SVG pressure distribution, saved scenarios, audit trail, and Word report export.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "saved-results",
+    "svg-output",
+    "equation-rendering",
+    "responsive-ui",
+    "local-storage",
+    "audit-trail",
+    "word-export"
+  ]
+}
