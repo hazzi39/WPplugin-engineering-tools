@@ -1,0 +1,531 @@
+.et-tool--nominal-axial-capacity {
+  --et-nac-bg: #f5f7f6;
+  --et-nac-surface: #ffffff;
+  --et-nac-surface-strong: #f8fbff;
+  --et-nac-border: #dfe6ee;
+  --et-nac-border-strong: #c9d7e6;
+  --et-nac-text: #17212b;
+  --et-nac-muted: #5f6f81;
+  --et-nac-blue: #2a69d1;
+  --et-nac-blue-deep: #174a99;
+  --et-nac-blue-soft: rgba(42, 105, 209, 0.12);
+  --et-nac-shadow: 0 18px 36px rgba(25, 47, 89, 0.08);
+  --et-nac-shadow-soft: 0 10px 24px rgba(25, 47, 89, 0.05);
+  --et-nac-radius: 18px;
+  --et-nac-radius-sm: 14px;
+  --et-nac-success: #0f8f63;
+  --et-nac-warn: #c06a13;
+  --et-nac-danger: #bc3244;
+  background:
+    radial-gradient(circle at top left, rgba(42, 105, 209, 0.08), transparent 30%),
+    linear-gradient(180deg, #f8fafc 0%, var(--et-nac-bg) 100%);
+  border-radius: 24px;
+  color: var(--et-nac-text);
+  padding: 16px;
+}
+
+.et-tool--nominal-axial-capacity *,
+.et-tool--nominal-axial-capacity *::before,
+.et-tool--nominal-axial-capacity *::after {
+  box-sizing: border-box;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__shell {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(223, 230, 238, 0.92);
+  border-radius: var(--et-nac-radius);
+  box-shadow: var(--et-nac-shadow-soft);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__header,
+.et-tool--nominal-axial-capacity .et-nac__card-header,
+.et-tool--nominal-axial-capacity .et-nac__collapse-toggle,
+.et-tool--nominal-axial-capacity .et-nac__visual-caption,
+.et-tool--nominal-axial-capacity .et-nac__result-actions,
+.et-tool--nominal-axial-capacity .et-nac__table-count,
+.et-tool--nominal-axial-capacity .et-nac__property-row,
+.et-tool--nominal-axial-capacity .et-nac__metric-grid,
+.et-tool--nominal-axial-capacity .et-nac__field-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__header {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__eyebrow,
+.et-tool--nominal-axial-capacity .et-nac__card-kicker {
+  color: var(--et-nac-blue);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__title,
+.et-tool--nominal-axial-capacity .et-nac__card h3 {
+  color: var(--et-nac-text);
+  font-size: clamp(1.2rem, 1.6vw, 1.8rem);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__card-header {
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: 16px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__card-header p,
+.et-tool--nominal-axial-capacity .et-nac__visual-caption span,
+.et-tool--nominal-axial-capacity .et-nac__helper,
+.et-tool--nominal-axial-capacity .et-nac__formula-note p,
+.et-tool--nominal-axial-capacity .et-nac__export-feedback,
+.et-tool--nominal-axial-capacity .et-nac__table-empty {
+  color: var(--et-nac-muted);
+  margin: 0;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__header-badge,
+.et-tool--nominal-axial-capacity .et-nac__status-pill,
+.et-tool--nominal-axial-capacity .et-nac__contact-pill {
+  align-self: start;
+  background: var(--et-nac-blue-soft);
+  border: 1px solid rgba(42, 105, 209, 0.18);
+  border-radius: 999px;
+  color: var(--et-nac-blue-deep);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 700;
+  justify-self: start;
+  padding: 8px 12px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__status-pill[data-tone="invalid"],
+.et-tool--nominal-axial-capacity .et-nac__contact-pill[data-tone="invalid"] {
+  background: rgba(188, 50, 68, 0.1);
+  border-color: rgba(188, 50, 68, 0.16);
+  color: var(--et-nac-danger);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__status-pill[data-tone="valid"],
+.et-tool--nominal-axial-capacity .et-nac__contact-pill[data-tone="valid"] {
+  background: rgba(15, 143, 99, 0.12);
+  border-color: rgba(15, 143, 99, 0.18);
+  color: var(--et-nac-success);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__main-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__left-column,
+.et-tool--nominal-axial-capacity .et-nac__right-column {
+  display: grid;
+  gap: 16px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__visual-frame {
+  background:
+    linear-gradient(rgba(42, 105, 209, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42, 105, 209, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, #fbfdff 0%, #f2f7fc 100%);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  border: 1px solid var(--et-nac-border);
+  border-radius: var(--et-nac-radius-sm);
+  min-height: 360px;
+  overflow: hidden;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__diagram {
+  display: block;
+  height: auto;
+  min-height: 360px;
+  width: 100%;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__visual-caption {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__visual-caption strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__result-card {
+  background:
+    linear-gradient(180deg, rgba(42, 105, 209, 0.06), rgba(42, 105, 209, 0.01)),
+    var(--et-nac-surface);
+  box-shadow: var(--et-nac-shadow);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-metric {
+  background: linear-gradient(180deg, rgba(23, 74, 153, 0.96), rgba(42, 105, 209, 0.9));
+  border-radius: 22px;
+  color: #ffffff;
+  margin-bottom: 16px;
+  overflow: hidden;
+  padding: 20px;
+  position: relative;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-metric::after {
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.26), transparent 38%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-label,
+.et-tool--nominal-axial-capacity .et-nac__hero-note {
+  position: relative;
+  z-index: 1;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.88;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-value {
+  display: block;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__hero-note {
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 10px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__metric-grid {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  margin-bottom: 16px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__metric-card {
+  background: rgba(248, 251, 255, 0.9);
+  border: 1px solid rgba(201, 215, 230, 0.9);
+  border-radius: 16px;
+  display: grid;
+  gap: 8px;
+  min-height: 92px;
+  padding: 14px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__metric-card span {
+  color: var(--et-nac-muted);
+  font-size: 0.88rem;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__metric-card strong {
+  font-size: 1.1rem;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__metric-card--accent {
+  background: var(--et-nac-blue-soft);
+  border-color: rgba(42, 105, 209, 0.22);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__result-actions {
+  grid-template-columns: 1fr;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__button {
+  appearance: none;
+  background: #ffffff;
+  border: 1px solid var(--et-nac-border-strong);
+  border-radius: 14px;
+  color: var(--et-nac-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  min-height: 46px;
+  padding: 0 16px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__button:hover,
+.et-tool--nominal-axial-capacity .et-nac__button:focus-visible {
+  border-color: rgba(42, 105, 209, 0.38);
+  box-shadow: 0 10px 20px rgba(42, 105, 209, 0.12);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__button--primary {
+  background: linear-gradient(180deg, var(--et-nac-blue) 0%, var(--et-nac-blue-deep) 100%);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__button--secondary {
+  background: rgba(42, 105, 209, 0.08);
+  border-color: rgba(42, 105, 209, 0.18);
+  color: var(--et-nac-blue-deep);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__field-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__field-grid--selects {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.et-tool--nominal-axial-capacity .et-nac__field {
+  display: grid;
+  gap: 8px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__label {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__helper {
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__control,
+.et-tool--nominal-axial-capacity .et-nac__select-wrap {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--et-nac-border);
+  border-radius: 14px;
+  display: flex;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 14px;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__control:focus-within,
+.et-tool--nominal-axial-capacity .et-nac__select-wrap:focus-within {
+  background: #ffffff;
+  border-color: rgba(42, 105, 209, 0.42);
+  box-shadow: 0 0 0 4px rgba(42, 105, 209, 0.12);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__input {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--et-nac-text);
+  flex: 1 1 auto;
+  font: inherit;
+  margin: 0;
+  min-height: 48px;
+  min-width: 0;
+  outline: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.et-tool--nominal-axial-capacity select.et-nac__input {
+  cursor: pointer;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__unit {
+  color: var(--et-nac-muted);
+  flex: 0 0 auto;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__error {
+  color: var(--et-nac-danger);
+  font-size: 0.8rem;
+  font-style: normal;
+  min-height: 1.1em;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__notice-stack {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__notice {
+  border-radius: 14px;
+  font-size: 0.88rem;
+  padding: 12px 14px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__notice--info {
+  background: rgba(42, 105, 209, 0.08);
+  border: 1px solid rgba(42, 105, 209, 0.12);
+  color: var(--et-nac-blue-deep);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__notice--warning {
+  background: rgba(192, 106, 19, 0.08);
+  border: 1px solid rgba(192, 106, 19, 0.12);
+  color: var(--et-nac-warn);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__collapse-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__collapse-toggle span {
+  color: var(--et-nac-blue);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__collapse-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  transition: opacity 200ms ease, transform 200ms ease, margin 200ms ease;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__collapse-panel.is-collapsed {
+  display: none;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__equation-block {
+  background: var(--et-nac-surface-strong);
+  border: 1px solid var(--et-nac-border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__math {
+  overflow-x: auto;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__properties-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__property-row {
+  align-items: center;
+  border-bottom: 1px solid rgba(223, 230, 238, 0.8);
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding-bottom: 10px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__property-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__property-row span {
+  color: var(--et-nac-muted);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__formula-note {
+  background: rgba(42, 105, 209, 0.06);
+  border: 1px solid rgba(42, 105, 209, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table-wrap {
+  overflow-x: auto;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table {
+  border-collapse: collapse;
+  min-width: 760px;
+  width: 100%;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table th,
+.et-tool--nominal-axial-capacity .et-nac__table td {
+  border-bottom: 1px solid rgba(223, 230, 238, 0.92);
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table th {
+  color: var(--et-nac-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table tbody tr:nth-child(even) {
+  background: rgba(248, 251, 255, 0.8);
+}
+
+.et-tool--nominal-axial-capacity .et-nac__table-empty {
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.et-tool--nominal-axial-capacity .et-nac__sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+@media (min-width: 900px) {
+  .et-tool--nominal-axial-capacity {
+    padding: 24px;
+  }
+
+  .et-tool--nominal-axial-capacity .et-nac__header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .et-tool--nominal-axial-capacity .et-nac__card-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .et-tool--nominal-axial-capacity .et-nac__main-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  }
+
+  .et-tool--nominal-axial-capacity .et-nac__result-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .et-tool--nominal-axial-capacity .et-nac__field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

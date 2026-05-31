@@ -1,0 +1,21 @@
+{
+  "slug": "nominal-axial-capacity",
+  "shortcode": "nominal_axial_capacity",
+  "title": "Nominal Axial Capacity",
+  "category": "steel",
+  "description": "Premium steel axial compression capacity calculator with geometry-derived section properties, live SVG visualisation, saved results, audit trail, and native Word export.",
+  "version": "1.0.0",
+  "assets": {
+    "style": "style.css",
+    "script": "app.js"
+  },
+  "supports": [
+    "local-storage",
+    "saved-results",
+    "responsive-ui",
+    "svg-output",
+    "equation-rendering",
+    "audit-trail",
+    "word-export"
+  ]
+}
